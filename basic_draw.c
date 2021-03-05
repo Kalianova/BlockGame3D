@@ -22,20 +22,32 @@ int 	my_mlx_pixel_get(t_data *data, int x, int y)
     return (r << 16 | g << 8 | b);
 }
 
-#include <stdio.h>
-
-void	line_draw(t_data *data, t_data *dst, int x, int height)
+void	line_draw(t_data *data, t_data *dst, int x, int height, t_vars *v)
 {
 	double	coef;
 	int		horizont;
+	int 	i;
 
 	horizont = dst->h / 2 - height / 2;
 	coef = data->h / (height + 0.0);
-	while (height > 0)
+	i = 0;
+	while (i <= horizont)
 	{
-		my_mlx_pixel_put(dst, x, horizont + height, my_mlx_pixel_get(data, x,(int)(coef * height)));
+		my_mlx_pixel_put(dst, x, i, v->C);
+		i++;
+	}
+	i = horizont + height;
+	while (i <= dst->h)
+	{
+		my_mlx_pixel_put(dst, x, i, v->F);
+		i++;
+	}
+	while (height > 0)
+	{//check edges
+		my_mlx_pixel_put(dst, x, horizont + height, my_mlx_pixel_get(data, x,(int)(coef * height) - 1));
 		height--;
 	}
+
 }
 
 /*void	square_draw(t_data *data, t_data *dst, int x, int dist, int angle)
@@ -104,7 +116,8 @@ void rayPut(t_vars *mlx, t_player *player, int x){
         stepY = 1;
         sideDistY = (mapY + 1.0 - player->posY) * deltaDistY;
       }
-
+printf("%f %f\n", player->rayDirX, player->rayDirY);
+fflush(stdout);
 
       //perform DDA
       while (hit == 0)
@@ -122,12 +135,9 @@ void rayPut(t_vars *mlx, t_player *player, int x){
           mapY += stepY;
           side = 1;
         }
-
         //Check if ray has hit a wall
         if (mlx->map[mapX][mapY] > 0) hit = 1;
-
       } 
-
       if (side == 0) 
       	perpWallDist = (mapX - player->posX + (1 - stepX) / 2) / player->rayDirX;
       else           
@@ -136,9 +146,10 @@ void rayPut(t_vars *mlx, t_player *player, int x){
       int lineHeight = (int)(mlx->img->h / perpWallDist);
       if (lineHeight / 2 + mlx->img->h / 2)
       	lineHeight = mlx->img->h;
-      line_draw(mlx->img_1, mlx->img, x, lineHeight);
+      //line_draw(mlx->WE.img, mlx->img, x, lineHeight, mlx);
 
-//printf("%i\n", lineHeight);
+printf("%f %f %f %f\n", stepX, stepY, lineHeight, perpWallDist);
+fflush(stdout);
 }
 
 

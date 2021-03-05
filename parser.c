@@ -154,18 +154,31 @@ int parseWindowSize(t_vars *v, t_list **head)
 	return (1);
 }
 
+t_data get_picture(void *mlx, char *path)
+{
+	t_data img;
+
+	img.img = mlx_xpm_file_to_image(mlx, path, &img.w, &img.h);
+	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
+                                 &img.endian);
+	return (img);
+}
+
+
 void switchTexture(t_vars *v, char **param, char **path)
 {
+	 //Try to read if not to error
 	if (ft_strncmp(*param, "NO", 2) == 0)
-		v->NO = *path;
+		v->NO = get_picture(v->mlx, *path);
 	if (ft_strncmp(*param, "EA", 2) == 0)
-		v->EA = *path;
+		v->EA = get_picture(v->mlx, *path);
 	if (ft_strncmp(*param, "SO", 2) == 0)
-		v->SO = *path;
+		v->SO = get_picture(v->mlx, *path);
 	if (ft_strncmp(*param, "WE", 2) == 0)
-		v->WE = *path;
+		v->WE = get_picture(v->mlx, *path);
 	if (ft_strncmp(*param, "S", 1) == 0)
-		v->S = *path;
+		v->S = get_picture(v->mlx, *path);
+
 	free(*param);
 }
 
@@ -173,7 +186,7 @@ void switchTexture(t_vars *v, char **param, char **path)
 int switchParams(t_vars *v, char *param, t_list **head)
 {
 	char	*tmp;
-	unsigned int 	*tmpint;
+	unsigned int 	tmpint;
 	char	*p;
 
 	if (ft_strncmp(param, "R", 1) == 0 && param[1] == ' ')
@@ -263,6 +276,36 @@ int validateMap(t_vars *v, int rows, int cols)
 	return (1);
 }
 
+int makePlayer(t_vars *v, char c, int i, int j)
+{
+	v->player->moveSpeed = 0.03;
+	v->player->rotSpeed = 0.03;
+	//Findout what plane means
+	v->player->planeX = 0.0;
+	v->player->planeY = 0.66;
+	if (v->player->posX >= 0.0)
+		return (errors("Multiple players", NULL));
+	v->player->posY = j + 0.5;
+	v->player->posX = i + 0.5;
+	if (c == 'N'){
+		v->player->dirX = 0;
+		v->player->dirY = 1;
+	}
+	if (c == 'S'){
+		v->player->dirX = 0;
+		v->player->dirY = -1;
+	}
+	if (c == 'W'){
+		v->player->dirX = -1;
+		v->player->dirY = 0;
+	}
+	if (c == 'E'){
+		v->player->dirX = 1;
+		v->player->dirY = 0;
+	}
+	return (1);
+}
+
 int convertMap(t_vars *v, int i, t_list **head)
 {
 	int j;
@@ -283,9 +326,8 @@ int convertMap(t_vars *v, int i, t_list **head)
 			|| ((char *)(*head)->content)[j] == 'E' || ((char *)(*head)->content)[j] == 'W')
 		{
 			v->map[i][j] = 0;
-			v->player->posY = i;
-			v->player->posX = j;
-			//DIractions of player
+			if(!makePlayer(v, ((char*)(*head)->content)[j], i, j))
+				return (0);
 		}
 		else
 			return (errors("Invalid charachter in map", NULL));
