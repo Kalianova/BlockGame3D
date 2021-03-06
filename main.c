@@ -40,7 +40,7 @@ void deleteAll()
 
 int 	main(void)
 {
-
+//lags when close to wall
 	void    *mlx;
     void    *mlx_win;
     t_vars vars;
@@ -48,7 +48,7 @@ int 	main(void)
     
     mlx = mlx_init();
     vars.mlx = mlx;
-    vars.win = mlx_win;
+   
     t_player player;
     player.posX = -1.0;
     player.posY = -1.0;
@@ -59,6 +59,7 @@ int 	main(void)
     }
 
     mlx_win = mlx_new_window(vars.mlx, vars.w, vars.h, "Hello world!");
+     vars.win = mlx_win;
     img.img = mlx_new_image(mlx, vars.w, vars.h);
     img.w = vars.w;
     img.h = vars.h;
@@ -67,13 +68,13 @@ int 	main(void)
     	&img.line_length, &img.endian);
 	vars.img = &img;
 
-    for (int i = 0; i < 400; ++i){
+    /*for (int i = 0; i < 400; ++i){
        line_draw(&vars.WE, vars.img, i, 200, &vars);
-    }
+    }*/
 
     mlx_put_image_to_window(mlx, mlx_win, vars.img->img, 0, 0);
-    //raysAll(&vars, vars.player);
-    
+    raysAll(&vars, vars.player);
+
 	//mlx_key_hook(mlx_win, key_hook, &vars);
 	mlx_hook(mlx_win, 2, 1L<<0, key_hook, &vars);
 	printf("1");

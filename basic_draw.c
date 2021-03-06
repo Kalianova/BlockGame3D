@@ -22,7 +22,7 @@ int 	my_mlx_pixel_get(t_data *data, int x, int y)
     return (r << 16 | g << 8 | b);
 }
 
-void	line_draw(t_data *data, t_data *dst, int x, int height, t_vars *v)
+void	line_draw(t_data *data, t_data *dst, int x, int height, t_vars *v, int xMap)
 {
 	double	coef;
 	int		horizont;
@@ -31,12 +31,12 @@ void	line_draw(t_data *data, t_data *dst, int x, int height, t_vars *v)
 	horizont = dst->h / 2 - height / 2;
 	coef = data->h / (height + 0.0);
 	i = 0;
-	while (i <= horizont)
+  while (i <= horizont)
 	{
 		my_mlx_pixel_put(dst, x, i, v->C);
 		i++;
 	}
-	i = horizont + height;
+	i = horizont + height - 20;
 	while (i <= dst->h)
 	{
 		my_mlx_pixel_put(dst, x, i, v->F);
@@ -44,7 +44,10 @@ void	line_draw(t_data *data, t_data *dst, int x, int height, t_vars *v)
 	}
 	while (height > 0)
 	{//check edges
-		my_mlx_pixel_put(dst, x, horizont + height, my_mlx_pixel_get(data, x,(int)(coef * height) - 1));
+      //printf("%i %i %f\n", horizont, height, coef * height);
+    fflush(stdout);
+    if (horizont + height < v->h && horizont + height >= 0)
+		  my_mlx_pixel_put(dst, x, horizont + height, my_mlx_pixel_get(data, xMap,(int)(coef * height)));
 		height--;
 	}
 
@@ -116,9 +119,6 @@ void rayPut(t_vars *mlx, t_player *player, int x){
         stepY = 1;
         sideDistY = (mapY + 1.0 - player->posY) * deltaDistY;
       }
-printf("%f %f\n", player->rayDirX, player->rayDirY);
-fflush(stdout);
-
       //perform DDA
       while (hit == 0)
       {
@@ -139,21 +139,35 @@ fflush(stdout);
         if (mlx->map[mapX][mapY] > 0) hit = 1;
       } 
       if (side == 0) 
+      {
       	perpWallDist = (mapX - player->posX + (1 - stepX) / 2) / player->rayDirX;
+      }
       else           
+      {
       	perpWallDist = (mapY - player->posY + (1 - stepY) / 2) / player->rayDirY;
+      }
+
+      //calculate value of wallX
+      double wallX; //where exactly the wall was hit
+      if (side == 0) wallX = player->posY + perpWallDist * player->rayDirY;
+      else           wallX = player->posX + perpWallDist * player->rayDirX;
+      wallX -= (int)wallX;
+
+      //x coordinate on the texture
+      int texX = (int)(wallX * (double)(mlx->SO.w));
+      if(side == 0 && player->rayDirX > 0) texX = (mlx->SO.w) - texX - 1;
+      if(side == 1 && player->rayDirY < 0) texX = (mlx->SO.w) - texX - 1;
        //Calculate height of line to draw on screen
       int lineHeight = (int)(mlx->img->h / perpWallDist);
-      if (lineHeight / 2 + mlx->img->h / 2)
-      	lineHeight = mlx->img->h;
-      //line_draw(mlx->WE.img, mlx->img, x, lineHeight, mlx);
-
-printf("%f %f %f %f\n", stepX, stepY, lineHeight, perpWallDist);
-fflush(stdout);
+      if (side == 0)
+        line_draw(&mlx->WE, mlx->img, x, lineHeight, mlx, texX);
+      else
+        line_draw(&mlx->SO, mlx->img, x, lineHeight, mlx, texX);
 }
 
 
 void raysAll(t_vars *mlx, t_player *player){
+
 
 	for(int x = 0; x < mlx->img->w; x++)
     {
@@ -162,9 +176,7 @@ void raysAll(t_vars *mlx, t_player *player){
       double cameraX = 2*x/(double)mlx->img->w-1; //x-coordinate in camera space
       player->rayDirX = player->dirX + player->planeX*cameraX;
       player->rayDirY = player->dirY + player->planeY*cameraX;
-
       rayPut(mlx, player, x);
-
   }
   mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->img, 0, 0);
 }

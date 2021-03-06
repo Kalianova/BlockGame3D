@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-void		rotatePlayer(t_vars *vars, double x)
+int		rotatePlayer(t_vars *vars, double x)
 {
 	double oldDirX = vars->player->dirX;
     vars->player->dirX = vars->player->dirX * cos(x) - vars->player->dirY * sin(x);
@@ -8,25 +8,35 @@ void		rotatePlayer(t_vars *vars, double x)
     double oldPlaneX = vars->player->planeX;
     vars->player->planeX = vars->player->planeX * cos(x) - vars->player->planeY * sin(x);
     vars->player->planeY = oldPlaneX * sin(x) + vars->player->planeY * cos(x);
+    return (1);
 }
 
-void		isPossibleMove(t_vars *vars, double x, double y)
+int		isPossibleMove(t_vars *vars, double x, double y)
 {
+	int k;
+
+	k = 0;
 	if (!vars->map[(int)vars->player->posX]
 		[(int)(vars->player->posY + y * vars->player->moveSpeed)])
 	{
+		k = 1;
       	vars->player->posY += y * vars->player->moveSpeed;
 	}
 	if (!vars->map[(int)(vars->player->posX + x * vars->player->moveSpeed)]
 		[(int)vars->player->posY])
 	{
+		k = 1;
 		vars->player->posX += x * vars->player->moveSpeed;
 	}
+	return (k);
 }
 
 int             key_hook(int keycode, t_vars *vars)
 {
-	printf("%i %f, %f, %f, %f\n", keycode, vars->player->posX, vars->player->posY, vars->player->dirX, vars->player->dirY);
+	int k;
+
+	k = 0;
+	//printf("%i %f, %f, %f, %f\n", keycode, vars->player->posX, vars->player->posY, vars->player->dirX, vars->player->dirY);
 	//fflush(stdout);
 	if (keycode == KEY_ESC)
 	{
@@ -35,16 +45,18 @@ int             key_hook(int keycode, t_vars *vars)
 		exit(0);
 	}
 	if (keycode == KEY_W)
-		isPossibleMove(vars, vars->player->dirX, vars->player->dirY);
+		k = isPossibleMove(vars, vars->player->dirX, vars->player->dirY);
 	if (keycode == KEY_S)
-		isPossibleMove(vars, -vars->player->dirX, -vars->player->dirY);
+		k = isPossibleMove(vars, -vars->player->dirX, -vars->player->dirY);
 	if (keycode == KEY_A)
-		isPossibleMove(vars, -vars->player->dirY, -vars->player->dirX);
+		k = isPossibleMove(vars, -vars->player->dirY, -vars->player->dirX);
 	if (keycode == KEY_D)
-		isPossibleMove(vars, vars->player->dirY, vars->player->dirX);
+		k = isPossibleMove(vars, vars->player->dirY, vars->player->dirX);
 	if (keycode == KEY_ARROW_LEFT)
-		rotatePlayer(vars, -vars->player->rotSpeed);
+		k = rotatePlayer(vars, -vars->player->rotSpeed);
 	if (keycode == KEY_ARROW_RIGHT)
-		rotatePlayer(vars, vars->player->rotSpeed);
+		k = rotatePlayer(vars, vars->player->rotSpeed);
+	if (k)
+		raysAll(vars, vars->player);
 	return (0);
 }

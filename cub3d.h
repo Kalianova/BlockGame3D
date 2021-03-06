@@ -67,7 +67,7 @@ typedef struct  s_vars {
 
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int 	my_mlx_pixel_get(t_data *data, int x, int y);
-void	line_draw(t_data *data, t_data *dst, int x, int height, t_vars *v);
+//void	line_draw(t_data *data, t_data *dst, int x, int height, t_vars *v);
 int		parseFile(char *name_of_file, t_vars *v);
 int		key_hook(int keycode, t_vars *vars);
 

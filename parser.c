@@ -281,8 +281,7 @@ int makePlayer(t_vars *v, char c, int i, int j)
 	v->player->moveSpeed = 0.03;
 	v->player->rotSpeed = 0.03;
 	//Findout what plane means
-	v->player->planeX = 0.0;
-	v->player->planeY = 0.66;
+	
 	if (v->player->posX >= 0.0)
 		return (errors("Multiple players", NULL));
 	v->player->posY = j + 0.5;
@@ -290,18 +289,26 @@ int makePlayer(t_vars *v, char c, int i, int j)
 	if (c == 'N'){
 		v->player->dirX = 0;
 		v->player->dirY = 1;
+		v->player->planeX = -1;
+		v->player->planeY = 0;
 	}
 	if (c == 'S'){
 		v->player->dirX = 0;
 		v->player->dirY = -1;
+		v->player->planeX = 1;
+		v->player->planeY = 0;
 	}
 	if (c == 'W'){
 		v->player->dirX = -1;
 		v->player->dirY = 0;
+		v->player->planeX = 0;
+		v->player->planeY = -1;
 	}
 	if (c == 'E'){
 		v->player->dirX = 1;
 		v->player->dirY = 0;
+		v->player->planeX = 0;
+		v->player->planeY = 1;
 	}
 	return (1);
 }
