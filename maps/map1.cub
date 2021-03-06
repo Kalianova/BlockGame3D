@@ -1,9 +1,9 @@
-R 1080 700
-NO ./pictures/a.xpm
-SO ./pictures/download.xpm
-WE ./pictures/purple.xpm
-EA ./pictures/n.xpm
-S ./pictures/n.xpm
+R 700 700
+NO ./pictures/colorstone.xpm
+SO ./pictures/bluestone.xpm
+WE ./pictures/greystone.xpm
+EA ./pictures/mossy.xpm
+S ./pictures/barrel.xpm
 F 220,100,0
 C 225,30,0
         1111111111111111111111111
@@ -17,6 +17,6 @@ C 225,30,0
 11000000110101011100000010001
 10002000000000001100000010011
 10000000000000001101010010001
-11000001110101011111011110N0111
+11000001110101011111011110W0111
 11110111 1110101 101111010001
 11111111 1111111 111111111111

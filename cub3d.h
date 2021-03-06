@@ -55,7 +55,8 @@ typedef struct  s_vars {
 	t_data 		S;
 	unsigned int	F;
 	unsigned int	C;
-
+	t_list		*sX;
+	t_list		*sY;
 	int 		rows;
 	int			cols;
     int			**map;

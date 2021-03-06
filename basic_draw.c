@@ -128,7 +128,14 @@ void rayPut(t_vars *mlx, t_player *player, int x){
           side = 1;
         }
         //Check if ray has hit a wall
-        if (mlx->map[mapX][mapY] > 0) hit = 1;
+        if (mlx->map[mapX][mapY] == 2)
+        {
+          ft_lstadd_front(&mlx->sX, ft_lstnew(&mapX));
+          ft_lstadd_front(&mlx->sY, ft_lstnew(&mapY));
+           //printf("%i %i", *(int *)mlx->sX->content, *(int *)(mlx->sY->content));
+        }
+        if (mlx->map[mapX][mapY] == 1)
+          hit = 1;
       } 
       if (side == 0) 
       	perpWallDist = (mapX - player->posX + (1 - stepX) / 2) / player->rayDirX;
@@ -137,7 +144,7 @@ void rayPut(t_vars *mlx, t_player *player, int x){
 
        t_data *src;
        //Calculate height of line to draw on screen
-      int lineHeight = (int)(mlx->img->h / perpWallDist);
+      int lineHeight = (int)(mlx->img->h / perpWallDist) ;
       if (side == 0)
       {
         if (player->rayDirX < 0 )
@@ -156,6 +163,7 @@ void rayPut(t_vars *mlx, t_player *player, int x){
         line_draw(src, mlx->img, mlx->img->w - x, -lineHeight, mlx, texX(src, mlx->player, mlx, side, -perpWallDist));
       else
         line_draw(src, mlx->img, mlx->img->w - x, lineHeight, mlx, texX(src, mlx->player, mlx, side, perpWallDist));
+        //draw sprites
 }
 
 

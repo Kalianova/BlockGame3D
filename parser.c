@@ -288,26 +288,26 @@ int makePlayer(t_vars *v, char c, int i, int j)
 	if (c == 'N'){
 		v->player->dirX = 0;
 		v->player->dirY = 1;
-		v->player->planeX = -1;
+		v->player->planeX = -1 * v->w / (v->h + 0.0) / 2;
 		v->player->planeY = 0;
 	}
 	if (c == 'S'){
 		v->player->dirX = 0;
 		v->player->dirY = -1;
-		v->player->planeX = 1;
+		v->player->planeX = 1 * v->w / (v->h + 0.0) / 2;
 		v->player->planeY = 0;
 	}
 	if (c == 'W'){
 		v->player->dirX = -1;
 		v->player->dirY = 0;
 		v->player->planeX = 0;
-		v->player->planeY = -1;
+		v->player->planeY = -1 * v->w / (v->h + 0.0) / 2;
 	}
 	if (c == 'E'){
 		v->player->dirX = 1;
 		v->player->dirY = 0;
 		v->player->planeX = 0;
-		v->player->planeY = 1;
+		v->player->planeY = 1 * v->w / (v->h + 0.0) / 2;
 	}
 	return (1);
 }
