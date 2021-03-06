@@ -102,6 +102,7 @@ unsigned int	parseOneColors(t_list **head, char *name, unsigned int *res)
 	}
 	if (!nextLine(head))
 		return (errors("Not enough parameters", &tmp));
+	return (errors("Invalid color parameters", &tmp));
 }
 
 int parseOneTexture(t_list **head, char **path)
@@ -278,10 +279,8 @@ int validateMap(t_vars *v, int rows, int cols)
 
 int makePlayer(t_vars *v, char c, int i, int j)
 {
-	v->player->moveSpeed = 0.03;
-	v->player->rotSpeed = 0.03;
-	//Findout what plane means
-	
+	v->player->moveSpeed = 0.1;
+	v->player->rotSpeed = 0.1;
 	if (v->player->posX >= 0.0)
 		return (errors("Multiple players", NULL));
 	v->player->posY = j + 0.5;

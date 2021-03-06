@@ -27,10 +27,11 @@ void printParams(t_vars *v)
 
 int             key_close(int keycode, t_vars *vars)
 {
-	printf("sgfgrf\n");
-	mlx_destroy_window(vars->mlx, vars->win);
-		free(vars->mlx);
-		exit(0);
+	//crush
+	//mlx_destroy_window(vars->mlx, vars->win);
+	//free(vars->mlx);
+	exit(0);
+	return (1);
 }
 
 void deleteAll()
@@ -77,9 +78,7 @@ int 	main(void)
 
 	//mlx_key_hook(mlx_win, key_hook, &vars);
 	mlx_hook(mlx_win, 2, 1L<<0, key_hook, &vars);
-	printf("1");
-	fflush(stdout);
-	//mlx_hook(vars.win, 17, 1L<<17, key_close, &vars);
+	mlx_hook(mlx_win, 17, 1L<<17, key_close, &vars);
 
     mlx_loop(mlx);
 }

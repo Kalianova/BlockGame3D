@@ -10,13 +10,12 @@
 #include "fcntl.h"
 
 #define KEY_ESC 53
-#define KEY_W 119 //1
-#define KEY_A 97 //0
-#define KEY_S 115 //1
-#define KEY_D 100 //2
-#define KEY_ARROW_LEFT 65361 //123
-#define KEY_ARROW_RIGHT 65363 //124
-#define KEY_RED_CROSS 0 //need to find
+#define KEY_W 13 //119
+#define KEY_A 0 //97
+#define KEY_S 1 //115
+#define KEY_D 2 //100
+#define KEY_ARROW_LEFT 123 //65361
+#define KEY_ARROW_RIGHT 124 //65363
 
 #define SCALE 16
 

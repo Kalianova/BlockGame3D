@@ -10,13 +10,16 @@ OBJ = $(SRC:.c=.o)
 
 .PHONY: all clean fclean re
 
+WASINOC = -Imlx_linux -O3
+
 %.o: %.c
-	$(CC) -Imlx_linux -Ilibft -O3 -c $< -o $@
+	$(CC) -Iminilibx_opengl -Ilibft  -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	gcc -o $(NAME) -L $(MLX) $(LXFLAGS) $(OBJ)
+	$(MAKE) bonus -C libft
+	gcc -o $(NAME) -L $(MLX) $(LXFLAGS) $(OBJ) -Llibft/ -lft
 
 l: $(OBJ)
 	$(MAKE) bonus -C libft

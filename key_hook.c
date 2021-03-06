@@ -17,13 +17,13 @@ int		isPossibleMove(t_vars *vars, double x, double y)
 
 	k = 0;
 	if (!vars->map[(int)vars->player->posX]
-		[(int)(vars->player->posY + y * vars->player->moveSpeed)])
+		[(int)(vars->player->posY + y * vars->player->moveSpeed)] && y != 0.0)
 	{
 		k = 1;
       	vars->player->posY += y * vars->player->moveSpeed;
 	}
 	if (!vars->map[(int)(vars->player->posX + x * vars->player->moveSpeed)]
-		[(int)vars->player->posY])
+		[(int)vars->player->posY] && x != 0.0)
 	{
 		k = 1;
 		vars->player->posX += x * vars->player->moveSpeed;
@@ -36,8 +36,6 @@ int             key_hook(int keycode, t_vars *vars)
 	int k;
 
 	k = 0;
-	//printf("%i %f, %f, %f, %f\n", keycode, vars->player->posX, vars->player->posY, vars->player->dirX, vars->player->dirY);
-	//fflush(stdout);
 	if (keycode == KEY_ESC)
 	{
     	mlx_destroy_window(vars->mlx, vars->win);
@@ -49,13 +47,13 @@ int             key_hook(int keycode, t_vars *vars)
 	if (keycode == KEY_S)
 		k = isPossibleMove(vars, -vars->player->dirX, -vars->player->dirY);
 	if (keycode == KEY_A)
-		k = isPossibleMove(vars, -vars->player->dirY, -vars->player->dirX);
+		k = isPossibleMove(vars, -vars->player->dirY, vars->player->dirX);
 	if (keycode == KEY_D)
-		k = isPossibleMove(vars, vars->player->dirY, vars->player->dirX);
+		k = isPossibleMove(vars, vars->player->dirY, -vars->player->dirX);
 	if (keycode == KEY_ARROW_LEFT)
-		k = rotatePlayer(vars, -vars->player->rotSpeed);
-	if (keycode == KEY_ARROW_RIGHT)
 		k = rotatePlayer(vars, vars->player->rotSpeed);
+	if (keycode == KEY_ARROW_RIGHT)
+		k = rotatePlayer(vars, -vars->player->rotSpeed);
 	if (k)
 		raysAll(vars, vars->player);
 	return (0);
