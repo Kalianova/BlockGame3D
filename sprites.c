@@ -1,4 +1,5 @@
-void    sprites(){//SPRITE CASTING
+void    sprites()
+{
     //sort sprites from far to close
     for(int i = 0; i < numSprites; i++)
     {
