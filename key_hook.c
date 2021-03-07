@@ -1,5 +1,11 @@
 #include "cub3d.h"
 
+int		key_close(int keycode, t_vars *vars)
+{
+	exit(0);
+	return (1);
+}
+
 int		rotatePlayer(t_vars *vars, double x)
 {
 	double oldDirX = vars->player->dirX;
@@ -16,14 +22,16 @@ int		isPossibleMove(t_vars *vars, double x, double y)
 	int k;
 
 	k = 0;
-	if (!vars->map[(int)vars->player->posX]
-		[(int)(vars->player->posY + y * vars->player->moveSpeed)] && y != 0.0)
+	if (vars->map[(int)vars->player->posX]
+		[(int)(vars->player->posY + y * (vars->player->moveSpeed) + 0.2)] != 1 && vars->map[(int)vars->player->posX]
+		[(int)(vars->player->posY + y * (vars->player->moveSpeed) - 0.2)] != 1 && y != 0.0)
 	{
 		k = 1;
       	vars->player->posY += y * vars->player->moveSpeed;
 	}
-	if (!vars->map[(int)(vars->player->posX + x * vars->player->moveSpeed)]
-		[(int)vars->player->posY] && x != 0.0)
+	if (vars->map[(int)(vars->player->posX + x * (vars->player->moveSpeed) + 0.2)]
+		[(int)vars->player->posY] != 1 && vars->map[(int)(vars->player->posX + x * (vars->player->moveSpeed) -  0.2)]
+		[(int)vars->player->posY] != 1 && x != 0.0)
 	{
 		k = 1;
 		vars->player->posX += x * vars->player->moveSpeed;

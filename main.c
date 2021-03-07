@@ -1,38 +1,7 @@
 #include "cub3d.h"
 
-int g = 100;
-
-
-void printParams(t_vars *v)
-{
-	int i;
-	int j;
-
-	i = 0;
-	j = 0;
-	printf("%i\n", v->w);
-	printf("%i\n", v->h);
-	printf("%i\n", v->F);
-	printf("%i\n", v->C);
-	while (i < v->rows){
-		while (j < v->cols){
-			printf("%i", v->map[i][j]);
-			j++;
-		}
-		printf("\n");
-		j = 0;
-		i++;
-	}
-}
-
-int             key_close(int keycode, t_vars *vars)
-{
-	//crush
-	//mlx_destroy_window(vars->mlx, vars->win);
-	//free(vars->mlx);
-	exit(0);
-	return (1);
-}
+//--save
+//screen size if size more then needed
 
 void deleteAll()
 {
@@ -41,7 +10,6 @@ void deleteAll()
 
 int 	main(void)
 {
-//lags when close to wall
 	void    *mlx;
     void    *mlx_win;
     t_vars vars;
@@ -68,11 +36,6 @@ int 	main(void)
     img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, 
     	&img.line_length, &img.endian);
 	vars.img = &img;
-
-    /*for (int i = 0; i < 400; ++i){
-       line_draw(&vars.WE, vars.img, i, 200, &vars);
-    }*/
-
     mlx_put_image_to_window(mlx, mlx_win, vars.img->img, 0, 0);
     raysAll(&vars, vars.player);
 

@@ -68,15 +68,21 @@ typedef struct  s_vars {
     t_player	*player;
 }               t_vars;
 	
-
-
-void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-int 	my_mlx_pixel_get(t_data *data, int x, int y);
-//void	line_draw(t_data *data, t_data *dst, int x, int height, t_vars *v);
-int		parseFile(char *name_of_file, t_vars *v);
-int		key_hook(int keycode, t_vars *vars);
-void    sprites(t_vars *v);
-
-void	raysAll(t_vars *mlx, t_player *player);
+void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
+int 			my_mlx_pixel_get(t_data *data, int x, int y);
+int				parseFile(char *name_of_file, t_vars *v);
+int				key_hook(int keycode, t_vars *vars);
+int				key_close(int keycode, t_vars *vars);
+void		    sprites(t_vars *v, double **buf);
+int 			parseMap(t_vars *v, t_list **head);
+int				errors(char *message, char ***del);
+void			raysAll(t_vars *mlx, t_player *player);
+int 			parseOneTexture(t_list **head, char **path);
+unsigned int	parseOneColors(t_list **head, char *name, unsigned int *res);
+int 			parseWindowSize(t_vars *v, t_list **head);
+t_data 			get_picture(void *mlx, char *path);
+int 			nextLine(t_list **head);
+void		 	switchTexture(t_vars *v, char **param, char **path);
+int 			checkNum(char *s);
 
 #endif

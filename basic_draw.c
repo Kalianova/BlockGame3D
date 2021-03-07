@@ -22,17 +22,20 @@ int 	my_mlx_pixel_get(t_data *data, int x, int y)
     return (r << 16 | g << 8 | b);
 }
 
-void	line_draw(t_data *data, t_data *dst, int x, int height, t_vars *v, int xMap)
+void	line_draw(t_data *data, t_data *dst, int x, long long int height, t_vars *v, int xMap)
 {
 	double	coef;
-	int		horizont;
+	long long int		horizont;
 	int 	i;
 
+
 	horizont = dst->h / 2 - height / 2;
+  if (horizont < -1000000)
+    return ;
 	coef = (data->h - 1) / (height + 0.0);
 	i = 0;
-  while (i <= horizont)
-	{
+  while (i < horizont)
+	{  
 		my_mlx_pixel_put(dst, x, i, v->C);
 		i++;
 	}
@@ -48,7 +51,6 @@ void	line_draw(t_data *data, t_data *dst, int x, int height, t_vars *v, int xMap
 		  my_mlx_pixel_put(dst, x, horizont + height, my_mlx_pixel_get(data, xMap,(int)(coef * height)));
 		height--;
 	}
-
 }
 
 
@@ -143,7 +145,7 @@ void putInSprites(t_vars *mlx, int x, int y){
   last->next->next = now;
 }
 
-void rayPut(t_vars *mlx, t_player *player, int x){
+void rayPut(t_vars *mlx, t_player *player, int x, double **buf){
 	//which box of the map we're in
       int mapX = (int)player->posX;
       int mapY = (int)player->posY;
@@ -214,7 +216,7 @@ void rayPut(t_vars *mlx, t_player *player, int x){
 
        t_data *src;
        //Calculate height of line to draw on screen
-      int lineHeight = (int)(mlx->img->h / perpWallDist) ;
+      long long int lineHeight = (int)(mlx->img->h / perpWallDist) ;
       if (side == 0)
       {
         if (player->rayDirX < 0 )
@@ -233,22 +235,23 @@ void rayPut(t_vars *mlx, t_player *player, int x){
         line_draw(src, mlx->img, mlx->img->w - x, -lineHeight, mlx, texX(src, mlx->player, mlx, side, -perpWallDist));
       else
         line_draw(src, mlx->img, mlx->img->w - x, lineHeight, mlx, texX(src, mlx->player, mlx, side, perpWallDist));
- //draw sprites
+      ((*buf)[x]) = perpWallDist;
 }
 
 
 void raysAll(t_vars *mlx, t_player *player){
 
 mlx->sprite = NULL;
-	for(int x = 0; x < mlx->img->w; x++)
+  double *buf = (double *)malloc(sizeof(double) * mlx->img->w);
+	for(int x = 1; x < mlx->img->w; x++)
   {
       //calculate ray position and direction
       double cameraX = 2 * x/(double)mlx->img->w - 1; //x-coordinate in camera space
       player->rayDirX = player->dirX + player->planeX*cameraX;
       player->rayDirY = player->dirY + player->planeY*cameraX;
-      rayPut(mlx, player, x);
+      rayPut(mlx, player, x, &buf);
 
   }
-  sprites(mlx);
+  sprites(mlx, &buf);
   mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->img, 0, 0);
 }
