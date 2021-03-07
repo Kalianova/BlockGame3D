@@ -51,6 +51,36 @@ void	line_draw(t_data *data, t_data *dst, int x, int height, t_vars *v, int xMap
 
 }
 
+
+/*void  line_draw_sprite(int x, t_vars *v, int beginY, int endY)
+{
+  double  coef;
+  int   i;
+
+  coef = (data->h - 1) / (height + 0.0);
+  i = 0;
+
+  while (beginY < endY)
+  {
+    my_mlx_pixel_put(v->img, x, horizont + height, my_mlx_pixel_get(v->S, xMap,(int)(coef * height)));
+    beginY++;
+  }
+  
+ //loop through every vertical stripe of the sprite on screen
+      for(int stripe = drawStartX; stripe < drawEndX; stripe++)
+      {
+        int texX = int(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * texWidth / spriteWidth) / 256;
+        if(transformY > 0 && stripe > 0 && stripe < w && transformY < ZBuffer[stripe])
+        for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
+        {
+          int d = (y-vMoveScreen) * 256 - h * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
+          int texY = ((d * texHeight) / spriteHeight) / 256;
+          Uint32 color = texture[sprite[spriteOrder[i]].texture][texWidth * texY + texX]; //get current color from the texture
+          if((color & 0x00FFFFFF) != 0) buffer[y][stripe] = color; //paint pixel if it isn't black, black is the invisible color
+        }
+      }
+}*/
+
 int texX(t_data *image, t_player *player, t_vars *mlx, int side, double perpWallDist)
 {
   double wallX; //where exactly the wall was hit
@@ -68,6 +98,49 @@ int texX(t_data *image, t_player *player, t_vars *mlx, int side, double perpWall
   if(side == 1 && player->rayDirY < 0) 
     texX = (image->w) - texX - 1;
   return texX;
+}
+
+void putInSprites(t_vars *mlx, int x, int y){
+  t_list *now;
+  t_list *last;
+  t_sprite *sp;
+
+  now = mlx->sprite;
+  last = NULL;
+  sp = (t_sprite *)malloc(sizeof(t_sprite));
+  sp->x = x;
+  sp->y = y;
+  if (now == NULL)
+  {
+    mlx->sprite = ft_lstnew(sp);
+    return;
+  }
+  while (now && (((t_sprite *)now->content)->x - mlx->player->posX) * (((t_sprite *)now->content)->x - mlx->player->posX) + 
+    (((t_sprite *)now->content)->y - mlx->player->posY) * (((t_sprite *)now->content)->y - mlx->player->posY) 
+    > (x - mlx->player->posX) * (x - mlx->player->posX) + (y - mlx->player->posY) * (y - mlx->player->posY))
+  {
+    last = now;
+    now = now->next;
+  }
+  if (now && ((t_sprite *)now->content)->x == x && ((t_sprite *)now->content)->y == y)
+  {  
+    free(sp);
+    return;
+  }
+  if (now == NULL)
+  {
+    now = ft_lstnew(sp);
+    last->next = now;
+    return ;
+  }
+  if (last == NULL)
+  {
+    mlx->sprite = ft_lstnew(sp);
+    mlx->sprite->next = now;
+    return ;
+  }
+  last->next = ft_lstnew(sp);
+  last->next->next = now;
 }
 
 void rayPut(t_vars *mlx, t_player *player, int x){
@@ -127,12 +200,9 @@ void rayPut(t_vars *mlx, t_player *player, int x){
           mapY += stepY;
           side = 1;
         }
-        //Check if ray has hit a wall
         if (mlx->map[mapX][mapY] == 2)
         {
-          ft_lstadd_front(&mlx->sX, ft_lstnew(&mapX));
-          ft_lstadd_front(&mlx->sY, ft_lstnew(&mapY));
-           //printf("%i %i", *(int *)mlx->sX->content, *(int *)(mlx->sY->content));
+          putInSprites(mlx, mapX, mapY);
         }
         if (mlx->map[mapX][mapY] == 1)
           hit = 1;
@@ -163,12 +233,13 @@ void rayPut(t_vars *mlx, t_player *player, int x){
         line_draw(src, mlx->img, mlx->img->w - x, -lineHeight, mlx, texX(src, mlx->player, mlx, side, -perpWallDist));
       else
         line_draw(src, mlx->img, mlx->img->w - x, lineHeight, mlx, texX(src, mlx->player, mlx, side, perpWallDist));
-        //draw sprites
+ //draw sprites
 }
 
 
 void raysAll(t_vars *mlx, t_player *player){
 
+mlx->sprite = NULL;
 	for(int x = 0; x < mlx->img->w; x++)
   {
       //calculate ray position and direction
@@ -176,6 +247,8 @@ void raysAll(t_vars *mlx, t_player *player){
       player->rayDirX = player->dirX + player->planeX*cameraX;
       player->rayDirY = player->dirY + player->planeY*cameraX;
       rayPut(mlx, player, x);
+
   }
+  sprites(mlx);
   mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->img, 0, 0);
 }
