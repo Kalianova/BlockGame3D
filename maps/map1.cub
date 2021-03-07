@@ -4,7 +4,7 @@ SO ./pictures/bluestone.xpm
 WE ./pictures/greystone.xpm
 EA ./pictures/mossy.xpm
 S ./pictures/barrel.xpm
-F 100,200,200
+F 255,255,255
 C 225,30,0
         1111111111111111111111111
         1000000000110000002000001

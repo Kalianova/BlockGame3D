@@ -1,6 +1,6 @@
 #include "cub3d.h"
 
-int errors(char *message, char ***del)
+int		errors(char *message, char ***del)
 {
 	int i;
 
@@ -9,13 +9,13 @@ int errors(char *message, char ***del)
 	{
 		while ((*del)[++i])
 			free((*del)[i]);
-		free (*del);
+		free(*del);
 	}
 	printf("Error!\n%s\n", message);
 	return (0);
 }
 
-int checkNum(char *s)
+int		check_num(char *s)
 {
 	int length;
 	int num;
@@ -42,11 +42,10 @@ int checkNum(char *s)
 	return (-1);
 }
 
-int nextLine(t_list **head)
+int		next_line(t_list **head)
 {
-	int i;
-	t_list *list;
-
+	int		i;
+	t_list	*list;
 
 	while (*head)
 	{
@@ -68,10 +67,8 @@ int nextLine(t_list **head)
 	return (0);
 }
 
-
-void switchTexture(t_vars *v, char **param, char **path)
+void	switch_texture(t_vars *v, char **param, char **path)
 {
-	 //Try to read if not to error
 	if (ft_strncmp(*param, "NO", 2) == 0)
 		v->NO = get_picture(v->mlx, *path);
 	if (ft_strncmp(*param, "EA", 2) == 0)
@@ -82,16 +79,15 @@ void switchTexture(t_vars *v, char **param, char **path)
 		v->WE = get_picture(v->mlx, *path);
 	if (ft_strncmp(*param, "S", 1) == 0)
 		v->S = get_picture(v->mlx, *path);
-
 	free(*param);
 }
 
-t_data get_picture(void *mlx, char *path)
+t_data	get_picture(void *mlx, char *path)
 {
 	t_data img;
 
 	img.img = mlx_xpm_file_to_image(mlx, path, &img.w, &img.h);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
-                                 &img.endian);
+		&img.endian);
 	return (img);
 }

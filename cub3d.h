@@ -70,19 +70,19 @@ typedef struct  s_vars {
 	
 void			my_mlx_pixel_put(t_data *data, int x, int y, int color);
 int 			my_mlx_pixel_get(t_data *data, int x, int y);
-int				parseFile(char *name_of_file, t_vars *v);
+int				parse_file(char *name_of_file, t_vars *v);
 int				key_hook(int keycode, t_vars *vars);
 int				key_close(int keycode, t_vars *vars);
 void		    sprites(t_vars *v, double **buf);
-int 			parseMap(t_vars *v, t_list **head);
+int 			parse_map(t_vars *v, t_list **head);
 int				errors(char *message, char ***del);
 void			raysAll(t_vars *mlx, t_player *player);
-int 			parseOneTexture(t_list **head, char **path);
-unsigned int	parseOneColors(t_list **head, char *name, unsigned int *res);
-int 			parseWindowSize(t_vars *v, t_list **head);
+int 			parse_one_texture(t_list **head, char **path);
+unsigned int	parse_one_colors(t_list **head, char *name, unsigned int *res);
+int 			parse_window_size(t_vars *v, t_list **head);
 t_data 			get_picture(void *mlx, char *path);
-int 			nextLine(t_list **head);
-void		 	switchTexture(t_vars *v, char **param, char **path);
-int 			checkNum(char *s);
+int 			next_line(t_list **head);
+void		 	switch_texture(t_vars *v, char **param, char **path);
+int 			check_num(char *s);
 
 #endif

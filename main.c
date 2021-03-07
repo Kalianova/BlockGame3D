@@ -2,6 +2,7 @@
 
 //--save
 //screen size if size more then needed
+//check colors from xpm
 
 void deleteAll()
 {
@@ -22,7 +23,7 @@ int 	main(void)
     player.posX = -1.0;
     player.posY = -1.0;
     vars.player = &player; 
-    if (!parseFile("maps/map1.cub", &vars)){
+    if (!parse_file("maps/map1.cub", &vars)){
     	deleteAll();
     	key_close(1, &vars);
     }
