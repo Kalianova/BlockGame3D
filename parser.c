@@ -1,11 +1,30 @@
 #include "cub3d.h"
 
+int		add_switch_params(t_vars *v, char *param, t_list **head)
+{
+	unsigned int	tmpint;
 
+	if (param[0] == 'F' && param[1] == ' ')
+	{
+		if (!(parse_one_colors(head, "F", &tmpint)))
+			return (0);
+		v->F = tmpint;
+		return (1);
+	}
+	if (param[0] == 'C' && param[1] == ' ')
+	{
+		if (!(parse_one_colors(head, "C", &tmpint)))
+			return (0);
+		v->C = tmpint;
+		return (1);
+	}
+	return (-1);
+}
 
 int		switch_params(t_vars *v, char *param, t_list **head)
 {
 	char			*tmp;
-	unsigned int 	tmpint;
+	int				tmp_int;
 	char			*p;
 
 	if (ft_strncmp(param, "R", 1) == 0 && param[1] == ' ')
@@ -19,18 +38,8 @@ int		switch_params(t_vars *v, char *param, t_list **head)
 			return (0);
 		switch_texture(v, &p, &tmp);
 	}
-	else if (ft_strncmp(param, "F", 1) == 0 && param[1] == ' ')
-	{
-		if (!(parse_one_colors(head, "F", &(v->F))))
-			return (0);
-		//v->F = tmpint;
-	}
-	else if (ft_strncmp(param, "C", 1) == 0 && param[1] == ' ')
-	{
-		if (!(parse_one_colors(head, "C", &tmpint)))
-			return (0);
-		v->C = tmpint;
-	}
+	else if ((tmp_int = add_switch_params(v, param, head)) >= 0)
+		return (tmp_int);
 	else
 		return (errors("Invalid parameter name", NULL));
 	return (1);
@@ -39,7 +48,6 @@ int		switch_params(t_vars *v, char *param, t_list **head)
 int		parse_lines(t_list **head, t_vars *v)
 {
 	int		i;
-	char	**tmp;
 	int		count;
 
 	count = 8;

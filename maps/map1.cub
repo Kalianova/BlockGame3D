@@ -1,11 +1,11 @@
-R 1300 700
+R 1000 1000
 NO ./pictures/colorstone.xpm
 SO ./pictures/bluestone.xpm
 WE ./pictures/greystone.xpm
 EA ./pictures/mossy.xpm
 S ./pictures/barrel.xpm
-F 255,255,255
-C 225,30,0
+F 10,255,1
+C 0, 20,  200
         1111111111111111111111111
         1000000000110000002000001
         1011000001110000002200001

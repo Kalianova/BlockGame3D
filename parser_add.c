@@ -34,7 +34,7 @@ int		check_num(char *s)
 		count++;
 		num /= 10;
 	}
-	if (s[0] == 0)
+	if (s[0] == '0')
 		count = 1;
 	free(s);
 	if (count == length)

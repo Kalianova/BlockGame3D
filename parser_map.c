@@ -93,7 +93,7 @@ int		parse_map(t_vars *v, t_list **head)
 	tmp = *head;
 	while (tmp)
 	{
-		if (ft_strlen(tmp->content) > v->cols)
+		if ((int)ft_strlen(tmp->content) > v->cols)
 			v->cols = ft_strlen(tmp->content);
 		tmp = tmp->next;
 		v->rows++;

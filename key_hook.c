@@ -2,35 +2,50 @@
 
 int		key_close(int keycode, t_vars *vars)
 {
-	exit(0);
+	if (vars == NULL)
+	{
+		exit(0);
+	}
+	return (keycode);
+}
+
+int		rotate_player(t_vars *vars, double x)
+{
+	double dir_x;
+	double dir_y;
+	double old_dir_x;
+	double old_plane_x;
+
+	old_dir_x = vars->player->dirX;
+	dir_x = vars->player->dirX;
+	dir_y = vars->player->dirY;
+	dir_x = dir_x * cos(x) - dir_y * sin(x);
+	dir_y = old_dir_x * sin(x) + dir_y * cos(x);
+	old_plane_x = vars->player->planeX;
+	vars->player->planeX = vars->player->planeX * cos(x)
+	- vars->player->planeY * sin(x);
+	vars->player->planeY = old_plane_x + x * sin(x)
+	+ vars->player->planeY * cos(x);
 	return (1);
 }
 
-int		rotatePlayer(t_vars *vars, double x)
-{
-	double oldDirX = vars->player->dirX;
-    vars->player->dirX = vars->player->dirX * cos(x) - vars->player->dirY * sin(x);
-    vars->player->dirY = oldDirX * sin(x) + vars->player->dirY * cos(x);
-    double oldPlaneX = vars->player->planeX;
-    vars->player->planeX = vars->player->planeX * cos(x) - vars->player->planeY * sin(x);
-    vars->player->planeY = oldPlaneX * sin(x) + vars->player->planeY * cos(x);
-    return (1);
-}
-
-int		isPossibleMove(t_vars *vars, double x, double y)
+int		is_possible_move(t_vars *vars, double x, double y)
 {
 	int k;
 
 	k = 0;
 	if (vars->map[(int)vars->player->posX]
-		[(int)(vars->player->posY + y * (vars->player->moveSpeed) + 0.2)] != 1 && vars->map[(int)vars->player->posX]
-		[(int)(vars->player->posY + y * (vars->player->moveSpeed) - 0.2)] != 1 && y != 0.0)
+		[(int)(vars->player->posY + y * (vars->player->moveSpeed) + 0.2)] != 1
+		&& vars->map[(int)vars->player->posX]
+		[(int)(vars->player->posY + y * (vars->player->moveSpeed) - 0.2)] != 1
+		&& y != 0.0)
 	{
 		k = 1;
-      	vars->player->posY += y * vars->player->moveSpeed;
+		vars->player->posY += y * vars->player->moveSpeed;
 	}
-	if (vars->map[(int)(vars->player->posX + x * (vars->player->moveSpeed) + 0.2)]
-		[(int)vars->player->posY] != 1 && vars->map[(int)(vars->player->posX + x * (vars->player->moveSpeed) -  0.2)]
+	if (vars->map[(int)(vars->player->posX + x * (vars->player->moveSpeed)
+		+ 0.2)][(int)vars->player->posY] != 1 && vars->map[(int)
+		(vars->player->posX + x * (vars->player->moveSpeed) - 0.2)]
 		[(int)vars->player->posY] != 1 && x != 0.0)
 	{
 		k = 1;
@@ -39,30 +54,30 @@ int		isPossibleMove(t_vars *vars, double x, double y)
 	return (k);
 }
 
-int             key_hook(int keycode, t_vars *vars)
+int		key_hook(int keycode, t_vars *vars)
 {
 	int k;
 
 	k = 0;
 	if (keycode == KEY_ESC)
 	{
-    	mlx_destroy_window(vars->mlx, vars->win);
+		mlx_destroy_window(vars->mlx, vars->win);
 		free(vars->mlx);
 		exit(0);
 	}
 	if (keycode == KEY_W)
-		k = isPossibleMove(vars, vars->player->dirX, vars->player->dirY);
+		k = is_possible_move(vars, vars->player->dirX, vars->player->dirY);
 	if (keycode == KEY_S)
-		k = isPossibleMove(vars, -vars->player->dirX, -vars->player->dirY);
+		k = is_possible_move(vars, -vars->player->dirX, -vars->player->dirY);
 	if (keycode == KEY_A)
-		k = isPossibleMove(vars, -vars->player->dirY, vars->player->dirX);
+		k = is_possible_move(vars, -vars->player->dirY, vars->player->dirX);
 	if (keycode == KEY_D)
-		k = isPossibleMove(vars, vars->player->dirY, -vars->player->dirX);
+		k = is_possible_move(vars, vars->player->dirY, -vars->player->dirX);
 	if (keycode == KEY_ARROW_LEFT)
-		k = rotatePlayer(vars, vars->player->rotSpeed);
+		k = rotate_player(vars, vars->player->rotSpeed);
 	if (keycode == KEY_ARROW_RIGHT)
-		k = rotatePlayer(vars, -vars->player->rotSpeed);
+		k = rotate_player(vars, -vars->player->rotSpeed);
 	if (k)
-		raysAll(vars, vars->player);
+		rays_all(vars, vars->player);
 	return (0);
 }

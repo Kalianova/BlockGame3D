@@ -14,23 +14,22 @@ unsigned int	parse_one_colors(t_list **head, char *name, unsigned int *res)
 {
 	char			**tmp;
 	int				i;
-	unsigned char	r;
-	unsigned char	g;
-	unsigned char	b;
+	long long		r;
+	long long		g;
+	long long		b;
 
 	i = 0;
 	if (*head && (tmp = ft_split((*head)->content, ',')) &&
 		tmp[0] && tmp[1] && tmp[2] && !tmp[3])
 	{
-		while (*(tmp[0] + i) == ' ')
-			i++;
 		if (!next_line(head))
 			return (errors("Not enough parameters", &tmp));
 		if (ft_strncmp(tmp[0] + i, name, 1) == 0 && ((g = check_num(tmp[1])) < 0
-			|| g > 255 || b > 255 || (r = check_num(tmp[0] + i + 1)) < 0
-			|| r > 255 || (b = check_num(tmp[2])) < 0))
+			|| g > 255 || ((b = check_num(tmp[2])) < 0) || b > 255 ||
+			(r = check_num(tmp[0] + i + 1)) < 0 || r > 255))
 			return (errors("Invalid number in color rgb", &tmp));
-		*res = (r << 16 | g << 8 | b);
+		*res = (((unsigned char)r) << 16 | ((unsigned char)g) << 8
+		| ((unsigned char)b));
 		erase_array(&tmp);
 		return (1);
 	}
@@ -42,7 +41,6 @@ unsigned int	parse_one_colors(t_list **head, char *name, unsigned int *res)
 int				parse_one_texture(t_list **head, char **path)
 {
 	char	**tmp;
-	int		i;
 	int		fd;
 
 	if (*head && (tmp = ft_split((*head)->content, ' ')) &&
@@ -54,10 +52,7 @@ int				parse_one_texture(t_list **head, char **path)
 		fd = open(*path, O_RDONLY);
 		if (fd < 0)
 			return (errors("No texture file", &tmp));
-		i = -1;
-		while (tmp[++i])
-			free(tmp[i]);
-		free(tmp);
+		erase_array(&tmp);
 		return (1);
 	}
 	return (errors("Invalid texture parameters", &tmp));
@@ -65,9 +60,10 @@ int				parse_one_texture(t_list **head, char **path)
 
 int				parse_window_size(t_vars *v, t_list **head)
 {
-	int		i;
 	char	**tmp;
+	int		size[2];
 
+	mlx_get_screen_size(v->mlx, &size[0], &size[1]);
 	if (*head)
 	{
 		tmp = ft_split((*head)->content, ' ');
@@ -80,12 +76,13 @@ int				parse_window_size(t_vars *v, t_list **head)
 		}
 		else
 			return (errors("Invalid number of parameters in R", &tmp));
-		i = -1;
-		while (tmp[++i])
-			free(tmp[i]);
-		free(tmp);
+		erase_array(&tmp);
 		if (!next_line(head))
 			return (errors("Invalid number of parameters)", NULL));
 	}
+	if (v->w > size[0])
+		v->w = size[0];
+	if (v->h > size[1])
+		v->h = size[1];
 	return (1);
 }

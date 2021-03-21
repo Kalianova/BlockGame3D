@@ -1,37 +1,42 @@
 NAME = cub3d
-CFLAGS = 
+CFLAGS = -Wall -Werror -Wextra
 LXFLAGS = -lmlx -framework OpenGL -framework AppKit
-LINUX = -lXext -lX11 -lm -lbsd -Lmlx_linux/ -lmlx
+LINUX = -Lmlx_linux/ -lmlx -lXext -lX11 -lm -lbsd -L/usr/include/mlx_linux/lib
 LINUX_MLX = mlx_linux
 MLX = minilibx_opengl
-SRC = main.c basic_draw.c parser.c parser_map.c parser_one.c parser_add.c key_hook.c sprites.c
+SRC = main.c basic_draw.c parser.c parser_map.c parser_one.c parser_add.c key_hook.c sprites.c save_bmp.c
 CC = gcc
 OBJ = $(SRC:.c=.o)
+MLX_MAC = -Iminilibx_opengl
 
 .PHONY: all clean fclean re
 
 WASINOC = -Imlx_linux -O3
 
 %.o: %.c
-	$(CC) -Iminilibx_opengl -Ilibft  -c $< -o $@
+	$(CC) $(CFLAGS)  -I$(LINUX_MLX) -Ilibft  -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(MAKE) bonus -C libft
-	gcc -o $(NAME) -L $(MLX) $(LXFLAGS) $(OBJ) -Llibft/ -lft
+	$(CC) -o $(NAME) -L $(MLX) $(LXFLAGS) $(OBJ) -Llibft/ -lft
 
-l: $(OBJ)
-	$(MAKE) bonus -C libft
-	$(CC) -o $(NAME) $(OBJ) -Lmlx_linux/ -lmlx -lXext -lX11 -lm -lbsd -L/usr/include/mlx_linux/lib -Llibft/ -lft
 clean:
+	$(MAKE) clean -C libft
 	rm -rf $(OBJ)
 
 fclean: clean
+	$(MAKE) fclean -C libft
 	rm -rf $(NAME)
 
 re: fclean all
 
+l: $(OBJ)
+	$(MAKE) -C $(LINUX_MLX)
+	$(MAKE) bonus -C libft
+	$(CC) -o $(NAME) $(OBJ) $(LINUX) -Llibft/ -lft
+
 rel: fclean l
 
-bonus:
+bonus: $(NAME)
