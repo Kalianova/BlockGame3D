@@ -35,7 +35,7 @@ void    sprites(t_vars *v, double **buf)
 			drawEndX = v->w - 1;
 
 		int temp;
-		while (drawStartX < drawEndX + 1)
+		while (drawStartX < drawEndX )
 		{
 			int texX = (int)(256 * (drawStartX - (-spriteWidth / 2 + spriteScreenX)) * v->S.w / spriteWidth) / 256;      
 			temp = drawStartY;

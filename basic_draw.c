@@ -40,14 +40,14 @@ void    line_draw(t_data *data, t_data *dst, int x, long long int height, t_vars
 		i++;
 	}
 	i = horizont + height;
-	while (i <= dst->h)
+	while (i < dst->h)
 	{
 		my_mlx_pixel_put(dst, x, i, v->F);
 		i++;
 	}
 	while (height > 0)
 	{
-	if (horizont + height < v->h && horizont + height >= 0)
+		if (horizont + height < v->h && horizont + height >= 0)
 			my_mlx_pixel_put(dst, x, horizont + height, my_mlx_pixel_get(data, xMap,(int)(coef * height)));
 		height--;
 	}

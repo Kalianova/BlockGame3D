@@ -87,5 +87,6 @@ void				switch_texture(t_vars *v, char **param, char **path);
 int					check_num(char *s);
 int					save_bmp(t_vars *v);
 void				erase_array_int(int ***del);
+void				deleteAll(t_vars *v);
 
 #endif

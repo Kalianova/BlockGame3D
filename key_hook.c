@@ -16,15 +16,15 @@ int		rotate_player(t_vars *vars, double x)
 	double old_dir_x;
 	double old_plane_x;
 
-	old_dir_x = vars->player->dirX;
 	dir_x = vars->player->dirX;
 	dir_y = vars->player->dirY;
-	dir_x = dir_x * cos(x) - dir_y * sin(x);
-	dir_y = old_dir_x * sin(x) + dir_y * cos(x);
+	old_dir_x = dir_x;
+	vars->player->dirX = dir_x * cos(x) - dir_y * sin(x);
+	vars->player->dirY = old_dir_x * sin(x) + dir_y * cos(x);
 	old_plane_x = vars->player->planeX;
 	vars->player->planeX = vars->player->planeX * cos(x)
 	- vars->player->planeY * sin(x);
-	vars->player->planeY = old_plane_x + x * sin(x)
+	vars->player->planeY = old_plane_x * sin(x)
 	+ vars->player->planeY * cos(x);
 	return (1);
 }
@@ -61,9 +61,9 @@ int		key_hook(int keycode, t_vars *vars)
 	k = 0;
 	if (keycode == KEY_ESC)
 	{
-		//erase_array_int(&vars->map);
+		deleteAll(vars);
 		mlx_destroy_window(vars->mlx, vars->win);
-		exit(0);
+		//exit(0);
 	}
 	if (keycode == KEY_W)
 		k = is_possible_move(vars, vars->player->dirX, vars->player->dirY);

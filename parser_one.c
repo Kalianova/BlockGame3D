@@ -76,8 +76,6 @@ int				parse_window_size(t_vars *v, t_list **head)
 	char	**tmp;
 	int		size[2];
 
-	size[0] = 1000;
-	size[1] = 1000;
 	mlx_get_screen_size(v->mlx, &size[0], &size[1]);
 	if (*head)
 	{

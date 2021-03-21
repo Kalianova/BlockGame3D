@@ -4,9 +4,13 @@
 //what if we can't read sprite
 //parse input map file
 
-void deleteAll()
+void deleteAll(t_vars *v)
 {
-	//make this method
+	erase_array_int(&(v->map));
+    free(v->WE.img);
+    free(v->EA.img);
+    free(v->NO.img);
+    free(v->SO.img);
 }
 
 int 	main(int argc, char **argv)
@@ -23,7 +27,7 @@ int 	main(int argc, char **argv)
     player.posY = -1.0;
     vars.player = &player; 
     if (!parse_file("maps/map1.cub", &vars)){
-    	deleteAll();
+    	deleteAll(&vars);
     	key_close(1, &vars);
     }
     mlx_win = mlx_new_window(vars.mlx, vars.w, vars.h, "Hello world!");

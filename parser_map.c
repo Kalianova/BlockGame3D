@@ -98,7 +98,8 @@ int		parse_map(t_vars *v, t_list **head)
 		tmp = tmp->next;
 		v->rows++;
 	}
-	v->map = (int **)malloc(sizeof(int *) * (v->rows));
+	v->map = (int **)malloc(sizeof(int *) * (v->rows + 1));
+	v->map[v->rows] = NULL;
 	i = 0;
 	while (i < v->rows)
 	{

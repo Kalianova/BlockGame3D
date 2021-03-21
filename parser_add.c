@@ -80,6 +80,7 @@ void	switch_texture(t_vars *v, char **param, char **path)
 	if (ft_strncmp(*param, "S", 1) == 0)
 		v->S = get_picture(v->mlx, *path);
 	free(*param);
+	while(1);
 }
 
 t_data	get_picture(void *mlx, char *path)
