@@ -39,7 +39,6 @@ int 	main(int argc, char **argv)
 	if (argc == 2 && ft_strncmp(argv[1], "--save", 6) == 0)
     	save_bmp(&vars);
 	//mlx_key_hook(mlx_win, key_hook, &vars);
-	
 	mlx_hook(mlx_win, 2, 1L<<0, key_hook, &vars);
 	mlx_hook(mlx_win, 17, 1L<<17, key_close, &vars);
     mlx_loop(mlx);

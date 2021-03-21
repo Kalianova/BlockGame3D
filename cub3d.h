@@ -10,12 +10,12 @@
 # include "fcntl.h"
 
 # define KEY_ESC 53
-# define KEY_W 119 //13 
-# define KEY_A 97 // 0 
-# define KEY_S 115 //1 
-# define KEY_D 100 //2 
-# define KEY_ARROW_LEFT 65361 //123 
-# define KEY_ARROW_RIGHT 65363 //124
+# define KEY_W 13 //119 //13 
+# define KEY_A 0 //97 // 0 
+# define KEY_S 1 //115 //1 
+# define KEY_D 2 //100 //2 
+# define KEY_ARROW_LEFT 123 //65361 //123 
+# define KEY_ARROW_RIGHT 124 //65363 //124
 
 typedef struct 		s_sprite
 {
@@ -86,5 +86,6 @@ int					next_line(t_list **head);
 void				switch_texture(t_vars *v, char **param, char **path);
 int					check_num(char *s);
 int					save_bmp(t_vars *v);
+void				erase_array_int(int ***del);
 
 #endif

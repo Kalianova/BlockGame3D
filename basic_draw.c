@@ -221,5 +221,6 @@ void rays_all(t_vars *mlx, t_player *player)
 		rayPut(mlx, player, x, &buf);
 	}
 	sprites(mlx, &buf);
+	free(buf);
 	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->img, 0, 0);
 }

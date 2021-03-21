@@ -10,6 +10,16 @@ void			erase_array(char ***del)
 	free(*del);
 }
 
+void			erase_array_int(int ***del)
+{
+	int i;
+
+	i = -1;
+	while ((*del)[++i])
+		free((*del)[i]);
+	free(*del);
+}
+
 unsigned int	parse_one_colors(t_list **head, char *name, unsigned int *res)
 {
 	char			**tmp;
@@ -19,6 +29,9 @@ unsigned int	parse_one_colors(t_list **head, char *name, unsigned int *res)
 	long long		b;
 
 	i = 0;
+	r = 0;
+	b = 0;
+	g = 0;
 	if (*head && (tmp = ft_split((*head)->content, ',')) &&
 		tmp[0] && tmp[1] && tmp[2] && !tmp[3])
 	{
@@ -63,6 +76,8 @@ int				parse_window_size(t_vars *v, t_list **head)
 	char	**tmp;
 	int		size[2];
 
+	size[0] = 1000;
+	size[1] = 1000;
 	mlx_get_screen_size(v->mlx, &size[0], &size[1]);
 	if (*head)
 	{

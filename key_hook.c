@@ -61,8 +61,8 @@ int		key_hook(int keycode, t_vars *vars)
 	k = 0;
 	if (keycode == KEY_ESC)
 	{
+		//erase_array_int(&vars->map);
 		mlx_destroy_window(vars->mlx, vars->win);
-		free(vars->mlx);
 		exit(0);
 	}
 	if (keycode == KEY_W)

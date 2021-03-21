@@ -2,7 +2,7 @@ NAME = cub3d
 CFLAGS = -Wall -Werror -Wextra
 LXFLAGS = -lmlx -framework OpenGL -framework AppKit
 LINUX = -Lmlx_linux/ -lmlx -lXext -lX11 -lm -lbsd -L/usr/include/mlx_linux/lib
-LINUX_MLX = mlx_linux
+LINUX_MLX = -Imlx_linux
 MLX = minilibx_opengl
 SRC = main.c basic_draw.c parser.c parser_map.c parser_one.c parser_add.c key_hook.c sprites.c save_bmp.c
 CC = gcc
@@ -14,12 +14,14 @@ MLX_MAC = -Iminilibx_opengl
 WASINOC = -Imlx_linux -O3
 
 %.o: %.c
-	$(CC) $(CFLAGS)  -I$(LINUX_MLX) -Ilibft  -c $< -o $@
+	$(CC) $(CFLAGS) $(MLX_MAC) -Ilibft  -c $< -o $@
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	$(MAKE) bonus -C libft
+	$(MAKE) -C minilibx_opengl
+	cp minilibx_opengl/libmlx.dylib libmlx.dylib 
 	$(CC) -o $(NAME) -L $(MLX) $(LXFLAGS) $(OBJ) -Llibft/ -lft
 
 clean:
