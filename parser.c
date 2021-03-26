@@ -8,14 +8,14 @@ int		add_switch_params(t_vars *v, char *param, t_list **head)
 	{
 		if (!(parse_one_colors(head, "F", &tmpint)))
 			return (0);
-		v->F = tmpint;
+		v->f = tmpint;
 		return (1);
 	}
 	if (param[0] == 'C' && param[1] == ' ')
 	{
 		if (!(parse_one_colors(head, "C", &tmpint)))
 			return (0);
-		v->C = tmpint;
+		v->c = tmpint;
 		return (1);
 	}
 	return (-1);

@@ -36,13 +36,13 @@ void    line_draw(t_data *data, t_data *dst, int x, long long int height, t_vars
 	i = 0;
 	while (i < horizont)
 	{  
-		my_mlx_pixel_put(dst, x, i, v->C);
+		my_mlx_pixel_put(dst, x, i, v->c);
 		i++;
 	}
 	i = horizont + height;
 	while (i < dst->h)
 	{
-		my_mlx_pixel_put(dst, x, i, v->F);
+		my_mlx_pixel_put(dst, x, i, v->f);
 		i++;
 	}
 	while (height > 0)
@@ -51,24 +51,25 @@ void    line_draw(t_data *data, t_data *dst, int x, long long int height, t_vars
 			my_mlx_pixel_put(dst, x, horizont + height, my_mlx_pixel_get(data, xMap,(int)(coef * height)));
 		height--;
 	}
+	printf("%i\n", xMap);
+	fflush(stdout);
 }
 
-int tex_x(t_data *image, t_player *player, int side, double perpWallDist)
+int tex_x(t_data *image, t_player *player, int side, double wall_dist)
 {
-	double wallX; //where exactly the wall was hit
+	double wallX;
 	int tex_x;
 
 	if (side == 0) 
-	wallX = player->posY + perpWallDist * player->rayDirY;
+		wallX = player->pos_y + wall_dist * player->r_dir_y;
 	else           
-	wallX = player->posX + perpWallDist * player->rayDirX;
+		wallX = player->pos_x + wall_dist * player->r_dir_x;
 	wallX -= (int)wallX;
-	//x coordinate on the texture
 	tex_x = (int)(wallX * (double)(image->w));
-	if(side == 0 && player->rayDirX > 0) 
-	tex_x = (image->w) - tex_x - 1;
-	if(side == 1 && player->rayDirY < 0) 
-	tex_x = (image->w) - tex_x - 1;
+	if(side == 0 && player->r_dir_x > 0) 
+		tex_x = (image->w) - tex_x - 1;
+	if(side == 1 && player->r_dir_y < 0) 
+		tex_x = (image->w) - tex_x - 1;
 	return tex_x;
 }
 
@@ -87,9 +88,9 @@ void	putInSprites(t_vars *mlx, int x, int y){
 		mlx->sprite = ft_lstnew(sp);
 		return;
 	}
-	while (now && (((t_sprite *)now->content)->x - mlx->player->posX) * (((t_sprite *)now->content)->x - mlx->player->posX) + 
-	(((t_sprite *)now->content)->y - mlx->player->posY) * (((t_sprite *)now->content)->y - mlx->player->posY) 
-	> (x - mlx->player->posX) * (x - mlx->player->posX) + (y - mlx->player->posY) * (y - mlx->player->posY))
+	while (now && (((t_sprite *)now->content)->x - mlx->player->pos_x) * (((t_sprite *)now->content)->x - mlx->player->pos_x) + 
+	(((t_sprite *)now->content)->y - mlx->player->pos_y) * (((t_sprite *)now->content)->y - mlx->player->pos_y) 
+	> (x - mlx->player->pos_x) * (x - mlx->player->pos_x) + (y - mlx->player->pos_y) * (y - mlx->player->pos_y))
 	{
 		last = now;
 		now = now->next;
@@ -115,112 +116,107 @@ void	putInSprites(t_vars *mlx, int x, int y){
 	last->next->next = now;
 }
 
-void	rayPut(t_vars *mlx, t_player *player, int x, double **buf){
-	//which box of the map we're in
-	int mapX = (int)player->posX;
-	int mapY = (int)player->posY;
-
-		//length of ray from current position to next x or y-side
-	double sideDistX;
-	double sideDistY;
-
-		 //length of ray from one x or y-side to next x or y-side
-	double deltaDistX = (player->rayDirY == 0) ? 0 : ((player->rayDirX == 0) ? 1 : fabs(1 / player->rayDirX));
-	double deltaDistY = (player->rayDirX == 0) ? 0 : ((player->rayDirY == 0) ? 1 : fabs(1 / player->rayDirY));
-	double perpWallDist;
-
-		//what direction to step in x or y-direction (either +1 or -1)
-	int stepX;
-	int stepY;
-
-	int hit = 0; //was there a wall hit?
-	int side; //was a NS or a EW wall hit?
-
-	if (player->rayDirX < 0)
+t_data	*choose_side(t_vars *mlx, t_player *player, int side)
+{
+	t_data *src;
+	
+	if (side == 0)
 	{
-		stepX = -1;
-		sideDistX = (player->posX - mapX) * deltaDistX;
+		if (player->r_dir_x < 0)
+			src = &mlx->we;
+		else
+			src = &mlx->no;
 	}
 	else
 	{
-		stepX = 1;
-		sideDistX = (mapX + 1.0 - player->posX) * deltaDistX;
+		if (player->r_dir_y < 0)
+			src = &mlx->ea;
+		else
+			src = &mlx->so;
 	}
-	if (player->rayDirY < 0)
+	return (src);
+}
+
+void	rayPut(t_vars *mlx, t_player *player, int x, double **buf)
+{
+	double dist_x;
+	double dist_y;
+	double wall_dist;
+	int step_x;
+	int step_y;
+	int side;
+	long long int line_h;
+
+	int map_x = (int)player->pos_x;
+	int map_y = (int)player->pos_y;
+	double deltaDistX = (player->r_dir_y == 0) ? 0 : ((player->r_dir_x == 0) ? 1 : fabs(1 / player->r_dir_x));
+	double deltaDistY = (player->r_dir_x == 0) ? 0 : ((player->r_dir_y == 0) ? 1 : fabs(1 / player->r_dir_y));
+	if (player->r_dir_x < 0)
 	{
-		stepY = -1;
-		sideDistY = (player->posY - mapY) * deltaDistY;
+		step_x = -1;
+		dist_x = (player->pos_x - map_x) * deltaDistX;
 	}
 	else
 	{
-		stepY = 1;
-		sideDistY = (mapY + 1.0 - player->posY) * deltaDistY;
+		step_x = 1;
+		dist_x = (map_x + 1.0 - player->pos_x) * deltaDistX;
 	}
-		//perform DDA
-	while (hit == 0)
+	if (player->r_dir_y < 0)
 	{
-		//jump to next map square, OR in x-direction, OR in y-direction
-		if (sideDistX < sideDistY)
+		step_y = -1;
+		dist_y = (player->pos_y - map_y) * deltaDistY;
+	}
+	else
+	{
+		step_y = 1;
+		dist_y = (map_y + 1.0 - player->pos_y) * deltaDistY;
+	}
+	while (mlx->map[map_x][map_y] != 1)
+	{
+		if (dist_x < dist_y)
 		{
-			sideDistX += deltaDistX;
-			mapX += stepX;
+			dist_x += deltaDistX;
+			map_x += step_x;
 			side = 0;
 		}
 		else
 		{
-			sideDistY += deltaDistY;
-			mapY += stepY;
+			dist_y += deltaDistY;
+			map_y += step_y;
 			side = 1;
 		}
-		if (mlx->map[mapX][mapY] == 2)
-		{
-			putInSprites(mlx, mapX, mapY);
-		}
-		if (mlx->map[mapX][mapY] == 1)
-			hit = 1;
+		if (mlx->map[map_x][map_y] == 2)
+			putInSprites(mlx, map_x, map_y);
 	} 
 	if (side == 0) 
-		perpWallDist = (mapX - player->posX + (1 - stepX) / 2) / player->rayDirX;
+		wall_dist = (map_x - player->pos_x + (1 - step_x) / 2) / player->r_dir_x;
 	else           
-		perpWallDist = (mapY - player->posY + (1 - stepY) / 2) / player->rayDirY;
-	t_data *src;
-		 //Calculate height of line to draw on screen
-	long long int lineHeight = (int)(mlx->img->h / perpWallDist) ;
-	if (side == 0)
-	{
-		if (player->rayDirX < 0 )
-			src = &mlx->WE;
-		else
-			src = &mlx->NO;
-	}
-	else
-	{
-		if (player->rayDirY < 0 )
-			src = &mlx->EA;
-		else
-			src = &mlx->SO;
-	}
-	if (lineHeight < 0)
-		line_draw(src, mlx->img, mlx->img->w - x, -lineHeight, mlx, tex_x(src, mlx->player, side, -perpWallDist));
-	else
-		line_draw(src, mlx->img, mlx->img->w - x, lineHeight, mlx, tex_x(src, mlx->player, side, perpWallDist));
-	((*buf)[x]) = perpWallDist;
+		wall_dist = (map_y - player->pos_y + (1 - step_y) / 2) / player->r_dir_y;
+	line_h = llabs((int)(mlx->img->h / wall_dist)) ;
+	line_draw(choose_side(mlx, player, side), mlx->img, mlx->img->w - x, line_h, mlx, tex_x(choose_side(mlx, player, side), player, side, fabs(wall_dist)));
+	((*buf)[x]) = wall_dist;
 }
 
 
-void rays_all(t_vars *mlx, t_player *player)
+void rays_all(t_vars *mlx, t_player *player, int bmp)
 {
 	mlx->sprite = NULL;
 	double *buf = (double *)malloc(sizeof(double) * mlx->img->w);
 	for(int x = 1; x < mlx->img->w; x++)
 	{
-		//calculate ray position and direction
-		double cameraX = 2 * x/(double)mlx->img->w - 1; //x-coordinate in camera space
-		player->rayDirX = player->dirX + player->planeX*cameraX;
-		player->rayDirY = player->dirY + player->planeY*cameraX;
+		double cameraX = 2 * x/(double)mlx->img->w - 1;
+		player->r_dir_x = player->dir_x + player->plane_x*cameraX;
+		player->r_dir_y = player->dir_y + player->plane_y*cameraX;
 		rayPut(mlx, player, x, &buf);
 	}
 	sprites(mlx, &buf);
 	free(buf);
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->img, 0, 0);
+	if (bmp)
+	{
+		save_bmp(mlx);
+		delete_all(mlx);
+    	key_close(1, mlx);
+	}
+	else
+		mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img->img, 0, 0);
 }

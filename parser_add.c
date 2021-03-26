@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_add.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: astaryu <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/26 14:47:07 by astaryu           #+#    #+#             */
+/*   Updated: 2021/03/26 14:47:10 by astaryu          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int		errors(char *message, char ***del)
@@ -70,17 +82,17 @@ int		next_line(t_list **head)
 void	switch_texture(t_vars *v, char **param, char **path)
 {
 	if (ft_strncmp(*param, "NO", 2) == 0)
-		v->NO = get_picture(v->mlx, *path);
+		v->no = get_picture(v->mlx, *path);
 	if (ft_strncmp(*param, "EA", 2) == 0)
-		v->EA = get_picture(v->mlx, *path);
+		v->ea = get_picture(v->mlx, *path);
 	if (ft_strncmp(*param, "SO", 2) == 0)
-		v->SO = get_picture(v->mlx, *path);
+		v->so = get_picture(v->mlx, *path);
 	if (ft_strncmp(*param, "WE", 2) == 0)
-		v->WE = get_picture(v->mlx, *path);
+		v->we = get_picture(v->mlx, *path);
 	if (ft_strncmp(*param, "S", 1) == 0)
-		v->S = get_picture(v->mlx, *path);
+		v->s = get_picture(v->mlx, *path);
 	free(*param);
-	while(1);
+	free(*path);
 }
 
 t_data	get_picture(void *mlx, char *path)

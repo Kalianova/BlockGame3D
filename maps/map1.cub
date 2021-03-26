@@ -1,4 +1,4 @@
-R 200 200
+R 2000 2000
 NO ./pictures/colorstone.xpm
 SO ./pictures/bluestone.xpm
 WE ./pictures/greystone.xpm

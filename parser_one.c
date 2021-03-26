@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_one.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: astaryu <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/26 14:47:37 by astaryu           #+#    #+#             */
+/*   Updated: 2021/03/26 14:47:49 by astaryu          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void			erase_array(char ***del)
@@ -23,12 +35,10 @@ void			erase_array_int(int ***del)
 unsigned int	parse_one_colors(t_list **head, char *name, unsigned int *res)
 {
 	char			**tmp;
-	int				i;
 	long long		r;
 	long long		g;
 	long long		b;
 
-	i = 0;
 	r = 0;
 	b = 0;
 	g = 0;
@@ -37,17 +47,15 @@ unsigned int	parse_one_colors(t_list **head, char *name, unsigned int *res)
 	{
 		if (!next_line(head))
 			return (errors("Not enough parameters", &tmp));
-		if (ft_strncmp(tmp[0] + i, name, 1) == 0 && ((g = check_num(tmp[1])) < 0
+		if (ft_strncmp(tmp[0], name, 1) == 0 && ((g = check_num(tmp[1])) < 0
 			|| g > 255 || ((b = check_num(tmp[2])) < 0) || b > 255 ||
-			(r = check_num(tmp[0] + i + 1)) < 0 || r > 255))
+			(r = check_num(tmp[0] + 1)) < 0 || r > 255))
 			return (errors("Invalid number in color rgb", &tmp));
 		*res = (((unsigned char)r) << 16 | ((unsigned char)g) << 8
 		| ((unsigned char)b));
 		erase_array(&tmp);
 		return (1);
 	}
-	if (!next_line(head))
-		return (errors("Not enough parameters", &tmp));
 	return (errors("Invalid color parameters", &tmp));
 }
 
@@ -62,7 +70,7 @@ int				parse_one_texture(t_list **head, char **path)
 		*path = ft_strdup(tmp[1]);
 		if (!next_line(head))
 			return (errors("Not enough parameters", &tmp));
-		fd = open(*path, O_RDONLY);
+		fd = open(tmp[1], O_RDONLY);
 		if (fd < 0)
 			return (errors("No texture file", &tmp));
 		erase_array(&tmp);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_map.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: astaryu <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/03/26 15:30:58 by astaryu           #+#    #+#             */
+/*   Updated: 2021/03/26 15:31:01 by astaryu          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 int		validate_map(t_vars *v, int rows, int cols)
@@ -31,29 +43,29 @@ int		validate_map(t_vars *v, int rows, int cols)
 
 double	init_player(t_vars *v, int dx, int dy)
 {
-	v->player->dirX = dx;
-	v->player->dirY = dy;
-	v->player->planeX = 0;
-	v->player->planeY = 0;
+	v->player->dir_x = dx;
+	v->player->dir_y = dy;
+	v->player->plane_x = 0;
+	v->player->plane_y = 0;
 	return (v->w / (v->h + 0.0) / 2);
 }
 
 int		make_player(t_vars *v, char c, int i, int j)
 {
-	v->player->moveSpeed = 0.07;
-	v->player->rotSpeed = 0.1;
-	if (v->player->posX >= 0.0)
+	v->player->move_speed = 0.07;
+	v->player->rot_speed = 0.1;
+	if (v->player->pos_x >= 0.0)
 		return (errors("Multiple players", NULL));
-	v->player->posY = j + 0.5;
-	v->player->posX = i + 0.5;
+	v->player->pos_y = j + 0.5;
+	v->player->pos_x = i + 0.5;
 	if (c == 'N')
-		v->player->planeX = -1 * init_player(v, 0, 1);
+		v->player->plane_x = -1 * init_player(v, 0, 1);
 	if (c == 'S')
-		v->player->planeX = init_player(v, 0, -1);
+		v->player->plane_x = init_player(v, 0, -1);
 	if (c == 'W')
-		v->player->planeY = -1 * init_player(v, -1, 0);
+		v->player->plane_y = -1 * init_player(v, -1, 0);
 	if (c == 'E')
-		v->player->planeY = init_player(v, 1, 0);
+		v->player->plane_y = init_player(v, 1, 0);
 	return (1);
 }
 
@@ -108,7 +120,7 @@ int		parse_map(t_vars *v, t_list **head)
 			return (0);
 		tmp = *head;
 		*head = (*head)->next;
-		free(tmp);
+		ft_lstdelone(tmp, (free));
 		i++;
 	}
 	return (validate_map(v, v->rows, v->cols));
