@@ -41,10 +41,8 @@ typedef struct		s_sprite_info
 	double			y;
 	int				width;
 	int				height;
-	double			invDet;
 	double			transf_x;
 	double			transf_y;
-	int				spriteScreenX;
 	int				draw_start_y;
 	int				draw_end_y;
 	int				draw_start_x;
