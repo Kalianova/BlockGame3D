@@ -27,9 +27,12 @@ void			erase_array_int(int ***del)
 	int i;
 
 	i = -1;
-	while ((*del)[++i])
-		free((*del)[i]);
-	free(*del);
+	if (*del)
+	{
+		while ((*del)[++i])
+			free((*del)[i]);
+		free(*del);
+	}
 }
 
 unsigned int	parse_one_colors(t_list **head, char *name, unsigned int *res)

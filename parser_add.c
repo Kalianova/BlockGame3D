@@ -83,7 +83,7 @@ int		switch_texture(t_vars *v, char **param, char **path)
 {
 	t_data	pic;
 	int		res;
-	
+
 	res = get_picture(v->mlx, *path, &pic);
 	if (ft_strncmp(*param, "NO", 2) == 0)
 		v->no = pic;

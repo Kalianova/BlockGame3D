@@ -101,7 +101,7 @@ int					parse_file(char *name_of_file, t_vars *v);
 int					key_hook(int keycode, t_vars *vars);
 int					key_close(int keycode, t_vars *vars);
 void				sprites(t_vars *v, double **buf);
-int					parse_map(t_vars *v, t_list **head);
+int					parse_map(t_vars *v, t_list **head, int i);
 int					errors(char *message, char ***del);
 t_data				*choose_side(t_vars *mlx, int side);
 void				line_draw(int x, t_vars *v, double wall_dist, int side);

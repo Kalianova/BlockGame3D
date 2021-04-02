@@ -14,8 +14,8 @@
 
 int		key_close(int keycode, t_vars *vars)
 {
-	delete_all(vars);
-	exit(0);
+	if (vars)
+		exit(0);
 	return (keycode);
 }
 

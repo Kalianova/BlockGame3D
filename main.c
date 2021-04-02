@@ -13,15 +13,13 @@
 #include "cub3d.h"
 
 //sega and cleaning
-//what if we can't read sprite
-//check map parsing
+//check map parsing what if island inside
 //makefile
 //comments in main. and key_hook.c
 
 void	delete_all(t_vars *v)
 {
 	erase_array_int(&(v->map));
-	//mlx_destroy_window(vars->mlx, vars->win); //sega
 	if (v->we.img)
 		free(v->we.img);
 	if (v->ea.img)
@@ -30,6 +28,7 @@ void	delete_all(t_vars *v)
 		free(v->no.img);
 	if (v->so.img)
 		free(v->so.img);
+	fflush(stdout);
 	exit(0);
 }
 
@@ -55,7 +54,7 @@ int		main(int argc, char **argv)
 	if (argc < 2)
 		return (errors("No parameter of map\n", NULL));
 	if (!parse_file(argv[1], &vars))
-		key_close(1, &vars);
+		delete_all(&vars);
 	vars.win = mlx_new_window(vars.mlx, vars.w, vars.h, "Hello world!");
 	img.img = mlx_new_image(vars.mlx, vars.w, vars.h);
 	img.w = vars.w;

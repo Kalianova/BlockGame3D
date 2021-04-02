@@ -97,10 +97,9 @@ int		convert_map(t_vars *v, int i, t_list **head)
 	return (1);
 }
 
-int		parse_map(t_vars *v, t_list **head)
+int		parse_map(t_vars *v, t_list **head, int i)
 {
 	t_list	*tmp;
-	int		i;
 
 	tmp = *head;
 	while (tmp)
@@ -112,8 +111,7 @@ int		parse_map(t_vars *v, t_list **head)
 	}
 	v->map = (int **)malloc(sizeof(int *) * (v->rows + 1));
 	v->map[v->rows] = NULL;
-	i = 0;
-	while (i < v->rows)
+	while (++i < v->rows)
 	{
 		v->map[i] = (int *)malloc(sizeof(int) * v->cols);
 		if (!convert_map(v, i, head))
@@ -121,7 +119,6 @@ int		parse_map(t_vars *v, t_list **head)
 		tmp = *head;
 		*head = (*head)->next;
 		ft_lstdelone(tmp, (free));
-		i++;
 	}
 	if (v->player->pos_x < 0.0)
 		return (errors("No player", NULL));

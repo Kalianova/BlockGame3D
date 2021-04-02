@@ -98,7 +98,7 @@ int		parse_file(char *name_of_file, t_vars *v)
 		return (0);
 	v->cols = 0;
 	v->rows = 0;
-	if (!parse_map(v, &head))
+	if (!parse_map(v, &head, -1))
 		return (0);
 	return (1);
 }
