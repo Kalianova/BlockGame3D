@@ -105,6 +105,10 @@ int					key_close(int keycode, t_vars *vars);
 void				sprites(t_vars *v, double **buf);
 int					parse_map(t_vars *v, t_list **head);
 int					errors(char *message, char ***del);
+t_data				*choose_side(t_vars *mlx, int side);
+void				line_draw(int x, t_vars *v, double wall_dist, int side);
+void				put_in_sprites(t_vars *mlx, int x, int y);
+void				ray_put(t_vars *mlx, int x, double **buf);
 void				rays_all(t_vars *mlx, t_player *player, int bmp);
 int					parse_one_texture(t_list **head, char **path);
 unsigned int		parse_one_colors

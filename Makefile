@@ -4,7 +4,7 @@ LXFLAGS = -lmlx -framework OpenGL -framework AppKit
 LINUX = -Lmlx_linux/ -lmlx -lXext -lX11 -lm -lbsd -L/usr/include/mlx_linux/lib
 LINUX_MLX = -Imlx_linux
 MLX = minilibx_opengl
-SRC = main.c basic_draw.c parser.c parser_map.c parser_one.c parser_add.c key_hook.c sprites.c save_bmp.c
+SRC = main.c rays_draw.c ray_put.c basic_draw.c parser.c parser_map.c parser_one.c parser_add.c key_hook.c sprites.c save_bmp.c
 CC = gcc
 OBJ = $(SRC:.c=.o)
 MLX_MAC = -Iminilibx_opengl
