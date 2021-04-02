@@ -123,5 +123,7 @@ int		parse_map(t_vars *v, t_list **head)
 		ft_lstdelone(tmp, (free));
 		i++;
 	}
+	if (v->player->pos_x < 0.0)
+		return (errors("No player", NULL));
 	return (validate_map(v, v->rows, v->cols));
 }

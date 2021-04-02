@@ -112,9 +112,9 @@ int					parse_one_texture(t_list **head, char **path);
 unsigned int		parse_one_colors
 (t_list **head, char *name, unsigned int *res);
 int					parse_window_size(t_vars *v, t_list **head);
-t_data				get_picture(void *mlx, char *path);
+int					get_picture(void *mlx, char *path, t_data *pic);
 int					next_line(t_list **head);
-void				switch_texture(t_vars *v, char **param, char **path);
+int					switch_texture(t_vars *v, char **param, char **path);
 int					check_num(char *s);
 int					save_bmp(t_vars *v);
 void				erase_array_int(int ***del);

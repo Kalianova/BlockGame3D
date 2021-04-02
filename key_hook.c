@@ -14,7 +14,7 @@
 
 int		key_close(int keycode, t_vars *vars)
 {
-	mlx_destroy_window(vars->mlx, vars->win); //sega
+	delete_all(vars);
 	exit(0);
 	return (keycode);
 }

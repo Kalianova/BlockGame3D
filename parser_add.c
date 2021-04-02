@@ -79,28 +79,38 @@ int		next_line(t_list **head)
 	return (0);
 }
 
-void	switch_texture(t_vars *v, char **param, char **path)
+int		switch_texture(t_vars *v, char **param, char **path)
 {
+	t_data	pic;
+	int		res;
+	
+	res = get_picture(v->mlx, *path, &pic);
 	if (ft_strncmp(*param, "NO", 2) == 0)
-		v->no = get_picture(v->mlx, *path);
+		v->no = pic;
 	if (ft_strncmp(*param, "EA", 2) == 0)
-		v->ea = get_picture(v->mlx, *path);
+		v->ea = pic;
 	if (ft_strncmp(*param, "SO", 2) == 0)
-		v->so = get_picture(v->mlx, *path);
+		v->so = pic;
 	if (ft_strncmp(*param, "WE", 2) == 0)
-		v->we = get_picture(v->mlx, *path);
+		v->we = pic;
 	if (ft_strncmp(*param, "S", 1) == 0)
-		v->s = get_picture(v->mlx, *path);
+		v->s = pic;
 	free(*param);
 	free(*path);
+	if (res == 0)
+		return (errors("Invalide texture picture", NULL));
+	return (1);
 }
 
-t_data	get_picture(void *mlx, char *path)
+int		get_picture(void *mlx, char *path, t_data *pic)
 {
 	t_data img;
 
 	img.img = mlx_xpm_file_to_image(mlx, path, &img.w, &img.h);
 	img.addr = mlx_get_data_addr(img.img, &img.bits_per_pixel, &img.line_length,
 		&img.endian);
-	return (img);
+	if (!img.img || !img.addr)
+		return (0);
+	*pic = img;
+	return (1);
 }

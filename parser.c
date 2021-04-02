@@ -46,9 +46,8 @@ int		switch_params(t_vars *v, char *param, t_list **head)
 		&& param[2] == ' ') || (ft_strncmp(param, "S ", 2) == 0))
 	{
 		p = ft_strdup(param);
-		if (!parse_one_texture(head, &tmp))
+		if (!parse_one_texture(head, &tmp) || !switch_texture(v, &p, &tmp))
 			return (0);
-		switch_texture(v, &p, &tmp);
 	}
 	else if ((tmp_int = add_switch_params(v, param, head)) >= 0)
 		return (tmp_int);

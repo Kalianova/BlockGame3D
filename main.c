@@ -21,10 +21,28 @@
 void	delete_all(t_vars *v)
 {
 	erase_array_int(&(v->map));
-	free(v->we.img);
-	free(v->ea.img);
-	free(v->no.img);
-	free(v->so.img);
+	//mlx_destroy_window(vars->mlx, vars->win); //sega
+	if (v->we.img)
+		free(v->we.img);
+	if (v->ea.img)
+		free(v->ea.img);
+	if (v->no.img)
+		free(v->no.img);
+	if (v->so.img)
+		free(v->so.img);
+	exit(0);
+}
+
+void	init_vars(t_vars *vars, t_player *player)
+{
+	vars->mlx = mlx_init();
+	player->pos_x = -1.0;
+	player->pos_y = -1.0;
+	vars->player = player;
+	vars->we.img = NULL;
+	vars->ea.img = NULL;
+	vars->no.img = NULL;
+	vars->so.img = NULL;
 }
 
 int		main(int argc, char **argv)
@@ -33,10 +51,7 @@ int		main(int argc, char **argv)
 	t_data		img;
 	t_player	player;
 
-	vars.mlx = mlx_init();
-	player.pos_x = -1.0;
-	player.pos_y = -1.0;
-	vars.player = &player;
+	init_vars(&vars, &player);
 	if (argc < 2)
 		return (errors("No parameter of map\n", NULL));
 	if (!parse_file(argv[1], &vars))
