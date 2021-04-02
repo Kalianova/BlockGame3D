@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   save_bmp.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: astaryu <marvin@42.fr>                     +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/04/02 20:34:40 by astaryu           #+#    #+#             */
+/*   Updated: 2021/04/02 20:34:41 by astaryu          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	add_int(unsigned char *header, int num)
@@ -8,10 +20,10 @@ void	add_int(unsigned char *header, int num)
 	header[3] = (unsigned char)(num >> 24);
 }
 
-void header_bmp(t_vars *v, int file_fd)
+void	header_bmp(t_vars *v, int file_fd)
 {
 	unsigned char	header[54];
-	int 			i;
+	int				i;
 
 	i = 0;
 	while (++i < 54)
@@ -20,7 +32,7 @@ void header_bmp(t_vars *v, int file_fd)
 	header[1] = 'M';
 	header[10] = (unsigned char)(54);
 	header[14] = (unsigned char)(40);
-	header[27] = (unsigned char)(1);
+	header[26] = (unsigned char)(1);
 	header[28] = (unsigned char)(24);
 	add_int(header + 2, (int)(54 + 3 * v->w * v->h));
 	add_int(header + 18, v->w);
@@ -28,7 +40,7 @@ void header_bmp(t_vars *v, int file_fd)
 	write(file_fd, header, 54);
 }
 
-int put_image(t_vars *v, int fileFd)
+int		put_image(t_vars *v, int file_fd)
 {
 	int i;
 	int j;
@@ -40,15 +52,15 @@ int put_image(t_vars *v, int fileFd)
 		j = -1;
 		while (++j < v->w)
 		{
-			color = my_mlx_pixel_get(v->img, i, j);
-			if(write(fileFd, &color, 3) < 0)
-				return 0;
+			color = my_mlx_pixel_get(v->img, j, v->h - i - 1);
+			if (write(file_fd, &color, 3) < 0)
+				return (0);
 		}
 	}
 	return (1);
 }
 
-int save_bmp(t_vars *v)
+int		save_bmp(t_vars *v)
 {
 	int file_fd;
 

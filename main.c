@@ -12,11 +12,11 @@
 
 #include "cub3d.h"
 
-//--save
 //sega and cleaning
 //what if we can't read sprite
 //check map parsing
 //makefile
+//comments in main. and key_hook.c
 
 void	delete_all(t_vars *v)
 {
