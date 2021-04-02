@@ -13,8 +13,10 @@
 #include "cub3d.h"
 
 //--save
+//sega and cleaning
 //what if we can't read sprite
 //check map parsing
+//makefile
 
 void	delete_all(t_vars *v)
 {

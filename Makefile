@@ -8,10 +8,11 @@ SRC = main.c rays_draw.c ray_put.c basic_draw.c parser.c parser_map.c parser_one
 CC = gcc
 OBJ = $(SRC:.c=.o)
 MLX_MAC = -Iminilibx_opengl
+MLX_LINUX = -Imlx_linux -O3
 
 .PHONY: all clean fclean re
 
-WASINOC = -Imlx_linux -O3
+
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(MLX_MAC) -Ilibft  -c $< -o $@
@@ -26,15 +27,17 @@ $(NAME): $(OBJ)
 
 clean:
 	$(MAKE) clean -C libft
+	$(MAKE) clean -C minilibx_opengl
 	rm -rf $(OBJ)
 
 fclean: clean
 	$(MAKE) fclean -C libft
+	rm -rf libmlx.dylib
 	rm -rf $(NAME)
 
 re: fclean all
 
-l: $(OBJ)
+l:  $(OBJ)
 	$(MAKE) -C $(LINUX_MLX)
 	$(MAKE) bonus -C libft
 	$(CC) -o $(NAME) $(OBJ) $(LINUX) -Llibft/ -lft
