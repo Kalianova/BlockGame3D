@@ -14,7 +14,7 @@
 
 //sega and cleaning
 //check map parsing what if island inside
-//makefile
+//makefile change of h file
 //comments in main. and key_hook.c
 
 void	delete_all(t_vars *v)
