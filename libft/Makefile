@@ -1,5 +1,6 @@
 NAME = libft.a
 CFLAGS = -Wall -Werror -Wextra
+HEADERS = libft.h
 SRC =	ft_memset.c		ft_bzero.c		ft_memcpy.c		ft_memccpy.c\
 		ft_memmove.c 	ft_memchr.c 	ft_memcmp.c\
 		ft_strlen.c		ft_strlcpy.c 	ft_strlcat.c\
@@ -20,10 +21,10 @@ OBJ_BONUS = $(SRC_BONUS:.c=.o)
 .PHONY: all clean fclean re
 
 %.o: %.c
-	gcc $(CFLAGS) -c $< -o $(<:.c=.o)	
+	gcc $(CFLAGS)  -c $< -o $(<:.c=.o)	
 
-$(NAME): $(OBJ)
-	ar -rcs $(NAME) $(OBJ)
+$(NAME): $(OBJ) $(OBJ_BONUS) $(HEADERS)
+	ar -rcs $(NAME) $(OBJ) $(OBJ_BONUS)
 
 all: $(NAME)
 
@@ -33,7 +34,7 @@ clean:
 fclean:	clean
 	rm -rf $(NAME)
 
-bonus: $(NAME) $(OBJ) $(OBJ_BONUS)
+bonus: $(NAME) $(OBJ) $(OBJ_BONUS) $(HEADERS)
 	ar -rcs $(NAME) $(OBJ) $(OBJ_BONUS)
 
 re: fclean $(NAME)

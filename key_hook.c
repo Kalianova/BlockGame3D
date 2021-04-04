@@ -12,10 +12,10 @@
 
 #include "cub3d.h"
 
-int		key_close(int keycode, t_vars *vars)
+int		key_close(int keycode, t_vars *v)
 {
-	if (vars)
-		exit(0);
+	erase_array_int(&(v->map));
+	exit(0);
 	return (keycode);
 }
 
@@ -70,11 +70,7 @@ int		key_hook(int keycode, t_vars *vars)
 
 	k = 0;
 	if (keycode == KEY_ESC)
-	{
 		delete_all(vars);
-		mlx_destroy_window(vars->mlx, vars->win);
-		exit(0);
-	}
 	if (keycode == KEY_W)
 		k = is_possible_move(vars, vars->player->dir_x, vars->player->dir_y);
 	if (keycode == KEY_S)

@@ -12,29 +12,29 @@
 
 #include "cub3d.h"
 
-//sega and cleaning
-//check map parsing what if island inside
-//makefile change of h file
-//comments in main. and key_hook.c
-
 void	delete_all(t_vars *v)
 {
 	erase_array_int(&(v->map));
 	if (v->we.img)
-		free(v->we.img);
+		mlx_destroy_image(v->mlx, v->we.img);
 	if (v->ea.img)
-		free(v->ea.img);
+		mlx_destroy_image(v->mlx, v->ea.img);
 	if (v->no.img)
-		free(v->no.img);
+		mlx_destroy_image(v->mlx, v->no.img);
 	if (v->so.img)
-		free(v->so.img);
-	fflush(stdout);
+		mlx_destroy_image(v->mlx, v->so.img);
+	if (v->win)
+	{
+		mlx_destroy_image(v->mlx, v->img->img);
+		mlx_destroy_window(v->mlx, v->win);
+	}
 	exit(0);
 }
 
 void	init_vars(t_vars *vars, t_player *player)
 {
 	vars->mlx = mlx_init();
+	vars->win = NULL;
 	player->pos_x = -1.0;
 	player->pos_y = -1.0;
 	vars->player = player;

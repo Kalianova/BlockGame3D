@@ -90,7 +90,10 @@ int		parse_file(char *name_of_file, t_vars *v)
 	head = NULL;
 	fd = open(name_of_file, O_RDONLY);
 	if (fd < 0)
-		return (errors("File .cub was not found", NULL));
+	{
+		errors("File .cub was not found", NULL);
+		exit(0);
+	}
 	while (get_next_line(fd, &line))
 		ft_lstadd_back(&head, ft_lstnew(line));
 	ft_lstadd_back(&head, ft_lstnew(line));

@@ -9,6 +9,7 @@ CC = gcc
 OBJ = $(SRC:.c=.o)
 MLX_MAC = -Iminilibx_opengl
 MLX_LINUX = -Imlx_linux -O3
+HEADERS = cub3d.h
 
 .PHONY: all clean fclean re
 
@@ -19,11 +20,11 @@ MLX_LINUX = -Imlx_linux -O3
 
 all: $(NAME)
 
-$(NAME): $(OBJ)
-	$(MAKE) bonus -C libft
+$(NAME): $(OBJ)  $(HEADERS)
+	$(MAKE) -C libft
 	$(MAKE) -C minilibx_opengl
 	cp minilibx_opengl/libmlx.dylib libmlx.dylib 
-	$(CC) -o $(NAME) -L $(MLX) $(LXFLAGS) $(OBJ) -Llibft/ -lft
+	$(CC) -o $(NAME) -L $(MLX) $(LXFLAGS) $(OBJ) -Llibft/ -lft 
 
 clean:
 	$(MAKE) clean -C libft
@@ -39,7 +40,7 @@ re: fclean all
 
 l:  $(OBJ)
 	$(MAKE) -C $(LINUX_MLX)
-	$(MAKE) bonus -C libft
+	$(MAKE) -C libft
 	$(CC) -o $(NAME) $(OBJ) $(LINUX) -Llibft/ -lft
 
 rel: fclean l
