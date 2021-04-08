@@ -66,9 +66,9 @@ void	line_draw(int x, t_vars *v, double wall_dist, int side)
 		return ;
 	coef = (choose_side(v, side)->h - 1) / (height + 0.0);
 	i = -1;
-	while (++i < horizont)
+	while (++i <= horizont)
 		my_mlx_pixel_put(v->img, x, i, v->c);
-	i = horizont + height;
+	i = horizont + height - 1;
 	while (i < v->img->h)
 	{
 		my_mlx_pixel_put(v->img, x, i, v->f);

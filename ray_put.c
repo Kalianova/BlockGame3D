@@ -59,16 +59,16 @@ t_data	*choose_side(t_vars *mlx, int side)
 	if (side == 0)
 	{
 		if (mlx->player->r_dir_x < 0)
-			src = &mlx->we;
+			src = &mlx->no;
 		else
-			src = &mlx->ea;
+			src = &mlx->so;
 	}
 	else
 	{
 		if (mlx->player->r_dir_y < 0)
-			src = &mlx->so;
+			src = &mlx->we;
 		else
-			src = &mlx->no;
+			src = &mlx->ea;
 	}
 	return (src);
 }
@@ -107,7 +107,7 @@ void	ray_put(t_vars *v, int x, double **buf)
 		if (v->map[map[0]][map[1]] == 2)
 			put_in_sprites(v, map[0], map[1]);
 	}
-	line_draw(v->img->w - x, v,
+	line_draw(v->img->w - x - 1, v,
 	choose_wall_dist(side, map[side], step[side], v), side);
 	((*buf)[x]) = choose_wall_dist(side, map[side], step[side], v);
 }

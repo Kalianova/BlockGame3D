@@ -28,7 +28,7 @@ int sprite_x)
 		temp = sp_inf->draw_start_y;
 		if (sp_inf->transf_y > 0 && v->w - sp_inf->draw_start_x - 1 >= 0 &&
 		v->w - sp_inf->draw_start_x - 1 < v->w && sp_inf->transf_y <
-		*(*buf + sp_inf->draw_start_x - 1))
+		*(*buf + sp_inf->draw_start_x))
 			while (temp++ < sp_inf->draw_end_y)
 			{
 				d = (temp - 1) * 256 - v->h * 128 + sp_inf->height * 128;

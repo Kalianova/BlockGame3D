@@ -42,6 +42,11 @@ void	init_vars(t_vars *vars, t_player *player)
 	vars->ea.img = NULL;
 	vars->no.img = NULL;
 	vars->so.img = NULL;
+	vars->s.img = NULL;
+	vars->c = 4294967294;
+	vars->f = 4294967294;
+	vars->w = -1;
+	vars->h = -1;
 }
 
 int		main(int argc, char **argv)

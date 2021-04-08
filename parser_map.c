@@ -58,13 +58,13 @@ int		make_player(t_vars *v, char c, int i, int j)
 		return (errors("Multiple players", NULL));
 	v->player->pos_y = j + 0.5;
 	v->player->pos_x = i + 0.5;
-	if (c == 'N')
-		v->player->plane_x = -1 * init_player(v, 0, 1);
-	if (c == 'S')
-		v->player->plane_x = init_player(v, 0, -1);
-	if (c == 'W')
-		v->player->plane_y = -1 * init_player(v, -1, 0);
 	if (c == 'E')
+		v->player->plane_x = -1 * init_player(v, 0, 1);
+	if (c == 'W')
+		v->player->plane_x = init_player(v, 0, -1);
+	if (c == 'N')
+		v->player->plane_y = -1 * init_player(v, -1, 0);
+	if (c == 'S')
 		v->player->plane_y = init_player(v, 1, 0);
 	return (1);
 }

@@ -17,7 +17,6 @@ void	add_int(unsigned char *header, int num)
 	header[0] = (unsigned char)num;
 	header[1] = (unsigned char)(num >> 8);
 	header[2] = (unsigned char)(num >> 16);
-	header[3] = (unsigned char)(num >> 24);
 }
 
 void	header_bmp(t_vars *v, int file_fd)

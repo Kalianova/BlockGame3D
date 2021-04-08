@@ -83,8 +83,11 @@ int		switch_texture(t_vars *v, char **param, char **path)
 {
 	t_data	pic;
 	int		res;
+	int		check;
 
 	res = get_picture(v->mlx, *path, &pic);
+	check = ((v->ea.img == NULL) + (v->so.img == NULL) +
+	(v->we.img == NULL) + (v->no.img == NULL) + (v->s.img == NULL));
 	if (ft_strncmp(*param, "NO", 2) == 0)
 		v->no = pic;
 	if (ft_strncmp(*param, "EA", 2) == 0)
@@ -93,10 +96,13 @@ int		switch_texture(t_vars *v, char **param, char **path)
 		v->so = pic;
 	if (ft_strncmp(*param, "WE", 2) == 0)
 		v->we = pic;
-	if (ft_strncmp(*param, "S", 1) == 0)
+	if (ft_strncmp(*param, "S ", 2) == 0)
 		v->s = pic;
 	free(*param);
 	free(*path);
+	if (check == ((v->ea.img == NULL) + (v->so.img == NULL) +
+	(v->we.img == NULL) + (v->no.img == NULL) + (v->s.img == NULL)))
+		return (errors("Multiple texture parameter", NULL));
 	if (res == 0)
 		return (errors("Invalide texture picture", NULL));
 	return (1);

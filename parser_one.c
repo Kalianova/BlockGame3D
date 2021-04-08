@@ -102,7 +102,7 @@ int				parse_window_size(t_vars *v, t_list **head)
 			return (errors("Invalid number of parameters in R", &tmp));
 		erase_array(&tmp);
 		if (!next_line(head))
-			return (errors("Invalid number of parameters)", NULL));
+			return (errors("Invalid number of parameters", &tmp));
 	}
 	if (v->w > size[0])
 		v->w = size[0];

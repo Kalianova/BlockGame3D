@@ -82,7 +82,7 @@ void	rays_all(t_vars *mlx, t_player *player, int bmp)
 	double	camera_x;
 	double	*buf;
 
-	x = 0;
+	x = -1;
 	mlx->sprite = NULL;
 	if (!(buf = (double *)malloc(sizeof(double) * mlx->img->w)))
 		return ;

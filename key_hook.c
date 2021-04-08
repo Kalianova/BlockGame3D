@@ -45,18 +45,14 @@ int		is_possible_move(t_vars *vars, double x, double y)
 
 	k = 0;
 	if (vars->map[(int)vars->player->pos_x]
-		[(int)(vars->player->pos_y + y * (vars->player->move_speed) + 0.2)] != 1
-		&& vars->map[(int)vars->player->pos_x]
-		[(int)(vars->player->pos_y + y * (vars->player->move_speed) - 0.2)] != 1
-		&& y != 0.0)
+		[(int)(vars->player->pos_y + y * ((vars->player->move_speed) + 0.2))]
+		!= 1 && y != 0.0)
 	{
 		k = 1;
 		vars->player->pos_y += y * vars->player->move_speed;
 	}
-	if (vars->map[(int)(vars->player->pos_x + x * (vars->player->move_speed)
-		+ 0.2)][(int)vars->player->pos_y] != 1 && vars->map[(int)
-		(vars->player->pos_x + x * (vars->player->move_speed) - 0.2)]
-		[(int)vars->player->pos_y] != 1 && x != 0.0)
+	if (vars->map[(int)(vars->player->pos_x + x * ((vars->player->move_speed)
+		+ 0.2))][(int)vars->player->pos_y] != 1 && x != 0.0)
 	{
 		k = 1;
 		vars->player->pos_x += x * vars->player->move_speed;
